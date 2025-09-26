@@ -1,6 +1,4 @@
-"use client";
-import React from "react";
-import { AnimatedTooltip } from "../ui/animated-tooltip";
+import { AnimatedTooltip } from "./animated-tooltip";
 const people = [
   {
     id: 1,
@@ -48,7 +46,7 @@ const people = [
 
 export function AnimatedTooltipPreview() {
   return (
-    <div className="flex flex-row items-center justify-center mb-10 w-full">
+    <div className="flex items-center">
       <AnimatedTooltip items={people} />
     </div>
   );
