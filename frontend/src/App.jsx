@@ -6,12 +6,16 @@ import ChatBox from "./pages/ChatBox";
 import Connections from "./pages/Connections";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
+import Layout from "./pages/Layout";
+import { useUser } from "@clerk/clerk-react";
 
 export default function App() {
+  const { user } = useUser();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />}>
+        <Route path="/" element={!user ? <Login /> : <Layout />}>
           <Route index element={<Home />} />
           <Route path="messages" element={<Messages />} />
           <Route path="messages/:userId" element={<ChatBox />} />
