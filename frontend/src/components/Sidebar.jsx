@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { assets, dummyUserData } from "../assets/assets";
 import { useClerk, UserButton } from "@clerk/clerk-react";
 import MenuItems from "./MenuItems";
@@ -42,9 +42,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
         <MenuItems setSidebarOpen={setSidebarOpen} />
 
-        <Link className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 text-white font-bold text-lg rounded-full shadow-2xl hover:from-blue-600 hover:via-blue-700 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-70 active:bg-blue-800 active:shadow-inner transform transition duration-500 ease-in-out mx-4 my-6">
+        <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 text-white font-bold text-lg rounded-full shadow-2xl hover:from-blue-600 hover:via-blue-700 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-70 active:bg-blue-800 active:shadow-inner transform transition duration-500 ease-in-out mx-4 my-6 cursor-pointer">
           Post
-        </Link>
+        </div>
       </div>
 
       <div className="w-full p-4 px-7 flex items-center justify-between">
