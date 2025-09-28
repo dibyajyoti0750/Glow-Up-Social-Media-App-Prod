@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { dummyStoriesData } from "../assets/assets";
-import { Plus } from "lucide-react";
+import { CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
 
 export default function StoriesBar() {
@@ -26,9 +26,7 @@ export default function StoriesBar() {
         >
           {/* Circle with plus */}
           <div className="w-[6.5rem] h-[6.5rem] rounded-full border-2 border-dashed border-blue-400 bg-gradient-to-b from-blue-100 to-white flex items-center justify-center transition-all duration-200 active:scale-95">
-            <div className="size-12 bg-blue-500 rounded-full flex items-center justify-center">
-              <Plus className="w-7 h-7 text-white" />
-            </div>
+            <CopyPlus className="w-8 h-8 text-blue-500" />
           </div>
 
           {/* Label */}
