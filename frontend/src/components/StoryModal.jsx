@@ -57,12 +57,12 @@ export default function StoryModal({ setShowModal, fetchStories }) {
     <div className="fixed inset-0 z-50 min-h-screen bg-black/70 backdrop-blur-xs text-white flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         <div className="text-center mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Add Story</h2>
+          <h2 className="text-lg font-medium">Add Story</h2>
 
           <button
             title="close"
             onClick={() => setShowModal(false)}
-            className="text-white p-2 cursor-pointer"
+            className="text-white py-2 cursor-pointer"
           >
             <X />
           </button>

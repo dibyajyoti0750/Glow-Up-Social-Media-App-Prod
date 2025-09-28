@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { dummyStoriesData } from "../assets/assets";
-import { CopyPlus } from "lucide-react";
+import { ChevronRight, CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
+import StoryViewer from "./StoryViewer";
 
 export default function StoriesBar() {
   const [stories, setStories] = useState([]);
@@ -17,7 +18,11 @@ export default function StoriesBar() {
   }, []);
 
   return (
-    <div className="w-screen sm:w-[calc(100vw - 240px)] lg:max-w-2xl no-scrollbar overflow-x-auto px-4">
+    <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-2xl no-scrollbar overflow-x-auto px-4">
+      <div className="absolute top-1/2 right-2 -translate-y-1/2 flex items-center justify-center bg-white rounded-full shadow">
+        <ChevronRight className="w-7 h-7" />
+      </div>
+
       <div className="flex items-center gap-4 py-2">
         {/* Add Story */}
         <div
@@ -38,6 +43,7 @@ export default function StoriesBar() {
         {/* Story cards */}
         {stories.map((story, idx) => (
           <div
+            onClick={() => setViewStory(story)}
             key={idx}
             className="flex flex-col items-center gap-1 cursor-pointer"
           >
@@ -68,6 +74,11 @@ export default function StoriesBar() {
       {/* Add story modal */}
       {showModal && (
         <StoryModal setShowModal={setShowModal} fetchStories={fetchStories} />
+      )}
+
+      {/* View story modal */}
+      {viewStory && (
+        <StoryViewer viewStory={viewStory} setViewStory={setViewStory} />
       )}
     </div>
   );

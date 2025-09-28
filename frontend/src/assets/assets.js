@@ -79,7 +79,7 @@ export const dummyStoriesData = [
     _id: "4b278aa3-8d3b-4fd3-bed5-cb5850c8e4d4",
     user: dummyUserData2,
     content:
-      "Progress isn't loud—it's the quiet hours no one sees that build the future everyone notices.",
+      "You should spend 100% of discretionary income and time on learning how to earn more until you have the income you want. Then, do whatever you want. \n\nFastest results come from wanting less. Second fastest come from learning more.",
     media_url: "",
     media_type: "text",
     background_color: "#BDB2FF",
@@ -93,6 +93,42 @@ export const dummyStoriesData = [
     content: "",
     media_url:
       "https://videos.pexels.com/video-files/855633/855633-hd_1920_1080_25fps.mp4",
+    media_type: "video",
+    background_color: "#FF9CEE",
+    createdAt: "2025-09-26T05:15:06.958Z",
+    updatedAt: "2025-09-26T05:15:06.958Z",
+  },
+
+  {
+    _id: "70f6309e-7a44-4165-9ea0-fd6a1fbaa01e",
+    user: dummyUserData,
+    content: "",
+    media_url:
+      "https://images.pexels.com/photos/1115105/pexels-photo-1115105.jpeg",
+    media_type: "image",
+    background_color: "#A0C4FF",
+    createdAt: "2025-09-26T05:15:06.958Z",
+    updatedAt: "2025-09-26T05:15:06.958Z",
+  },
+
+  {
+    _id: "4b278aa3-8d3b-4fd3-bed5-cb5850c8e4d4",
+    user: dummyUserData2,
+    content: "",
+    media_url:
+      "https://videos.pexels.com/video-files/8928582/8928582-uhd_2560_1440_25fps.mp4",
+    media_type: "video",
+    background_color: "#BDB2FF",
+    createdAt: "2025-09-26T05:15:06.958Z",
+    updatedAt: "2025-09-26T05:15:06.958Z",
+  },
+
+  {
+    _id: "c74781b5-61a1-4b73-bbc2-18b63c343065",
+    user: dummyUserData3,
+    content: "",
+    media_url:
+      "https://videos.pexels.com/video-files/4763826/4763826-uhd_2732_1440_24fps.mp4",
     media_type: "video",
     background_color: "#FF9CEE",
     createdAt: "2025-09-26T05:15:06.958Z",
