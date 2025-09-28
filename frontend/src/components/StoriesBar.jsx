@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dummyStoriesData } from "../assets/assets";
 import { ChevronRight, CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
@@ -9,6 +9,9 @@ export default function StoriesBar() {
   const [showModal, setShowModal] = useState(false);
   const [viewStory, setViewStory] = useState(null);
 
+  const storyContainerRef = useRef(null);
+  const [showScrollArrow, setShowScrollArrow] = useState(false);
+
   const fetchStories = async () => {
     setStories(dummyStoriesData);
   };
@@ -17,11 +20,43 @@ export default function StoriesBar() {
     fetchStories();
   }, []);
 
+  useEffect(() => {
+    const el = storyContainerRef.current;
+
+    if (!el) return;
+
+    const checkScroll = () => {
+      // arrow disappears when scrolled to the end
+      setShowScrollArrow(el.scrollLeft + el.clientWidth < el.scrollWidth);
+    };
+
+    checkScroll();
+    el.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll);
+
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, []);
+
   return (
-    <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-2xl no-scrollbar overflow-x-auto px-4">
-      <div className="absolute top-1/2 right-2 -translate-y-1/2 flex items-center justify-center bg-white rounded-full shadow">
-        <ChevronRight className="w-7 h-7" />
-      </div>
+    <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-2xl px-4">
+      {showScrollArrow && (
+        <button
+          onClick={() => {
+            if (storyContainerRef.current) {
+              storyContainerRef.current.scrollBy({
+                left: 200,
+                behavior: "smooth",
+              });
+            }
+          }}
+          className="absolute top-16 right-5 -translate-y-1/2 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition cursor-pointer focus:outline-none"
+        >
+          <ChevronRight className="w-7 h-7" />
+        </button>
+      )}
 
       <div className="flex items-center gap-4 py-2">
         {/* Add Story */}
@@ -40,35 +75,40 @@ export default function StoriesBar() {
           </p>
         </div>
 
-        {/* Story cards */}
-        {stories.map((story, idx) => (
-          <div
-            onClick={() => setViewStory(story)}
-            key={idx}
-            className="flex flex-col items-center gap-1 cursor-pointer"
-          >
-            {/* Story Ring */}
+        {/* Stories */}
+        <div
+          ref={storyContainerRef}
+          className="flex flex-1 gap-4 overflow-auto no-scrollbar"
+        >
+          {stories.map((story, idx) => (
             <div
-              className="p-[3.5px] rounded-full 
+              onClick={() => setViewStory(story)}
+              key={idx}
+              className="flex flex-col items-center gap-1 cursor-pointer"
+            >
+              {/* Story Ring */}
+              <div
+                className="p-[3.5px] rounded-full 
                  [background:conic-gradient(from_180deg,#f58529,#dd2a7b,#8134af,#515bd4,#f58529)] 
                  transition-all duration-200 active:scale-95"
-            >
-              {/* Story inside */}
-              <div className="w-24 h-24 rounded-full overflow-hidden border-3 border-white">
-                <img
-                  src={story.user.profile_picture}
-                  alt="profile picture"
-                  className="h-full w-full object-cover"
-                />
+              >
+                {/* Story inside */}
+                <div className="w-24 h-24 rounded-full overflow-hidden border-3 border-white">
+                  <img
+                    src={story.user.profile_picture}
+                    alt="profile picture"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Username */}
-            <p className="text-xs font-medium text-gray-700 truncate max-w-[4rem] text-center">
-              {story.user.username}
-            </p>
-          </div>
-        ))}
+              {/* Username */}
+              <p className="text-xs font-medium text-gray-700 truncate max-w-[4rem] text-center">
+                {story.user.username}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Add story modal */}
