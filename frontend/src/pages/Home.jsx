@@ -5,6 +5,7 @@ import StoriesBar from "../components/StoriesBar";
 import PostCard from "../components/PostCard";
 import RecentMessages from "../components/RecentMessages";
 import { MessageCircleHeart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
@@ -57,9 +58,12 @@ export default function Home() {
         <RecentMessages />
       </div>
 
-      <button className="fixed bottom-8 right-8 bg-white shadow-lg px-15 py-4 rounded-full border border-neutral-200 text-slate-800 flex items-center gap-2 font-medium">
+      <Link
+        to={"/inbox"}
+        className="fixed bottom-8 right-8 bg-white shadow-lg px-15 py-4 rounded-full border border-neutral-200 text-slate-800 flex items-center gap-2 font-medium"
+      >
         <MessageCircleHeart /> Messages
-      </button>
+      </Link>
     </div>
   ) : (
     <SkeletonLoader />
