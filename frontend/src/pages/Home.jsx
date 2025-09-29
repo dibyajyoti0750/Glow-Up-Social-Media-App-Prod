@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { dummyPostsData } from "../assets/assets";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StoriesBar from "../components/StoriesBar";
+import PostCard from "../components/PostCard";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
@@ -18,14 +19,18 @@ export default function Home() {
 
   return !loading ? (
     <div
-      className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex
+      className="h-full overflow-y-scroll no-scrollbar py-2 xl:pr-5 flex
       items-start justify-center xl:gap-8"
     >
       {/* Stories and post list */}
       <div>
         <StoriesBar />
 
-        <div className="p-4 space-y-6">List of posts</div>
+        <div>
+          {feeds.map((post) => (
+            <PostCard key={post._id} post={post} />
+          ))}
+        </div>
       </div>
 
       {/* Right sidebar */}

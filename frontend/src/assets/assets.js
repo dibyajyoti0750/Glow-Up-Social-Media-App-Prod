@@ -55,7 +55,7 @@ const dummyUserData2 = {
 
 const dummyUserData3 = {
   ...dummyUserData,
-  _id: "user_2",
+  _id: "user_3",
   username: "andrew_smith",
   full_name: "Andrew Smith",
   profile_picture:
@@ -141,12 +141,12 @@ export const dummyPostsData = [
     _id: "fa17ef9e-ab1e-4d17-9b7b-ea65ec6179ac",
     user: dummyUserData,
     content:
-      "Chasing dreams, one line of code at a time ✨ #CodeLife #DreamBig",
+      "Chasing dreams, one line of code at a time ✨ \n#CodeLife #DreamBig",
     image_urls: [
       "https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg",
     ],
     post_type: "text_with_image",
-    likes_count: [],
+    likes_count: ["0900da2c-10fe-4645-a429-0ac7af6739f5", "user_2", "user_3"],
     createdAt: "2025-09-26T05:15:06.958Z",
     updatedAt: "2025-09-26T05:15:06.958Z",
   },
@@ -155,7 +155,7 @@ export const dummyPostsData = [
     _id: "876314b3-d71c-46a0-b880-c0c05df788e1",
     user: dummyUserData2,
     content:
-      "Sometimes the smallest steps make the biggest changes 💫 #KeepGoing",
+      "Sometimes the smallest steps make the biggest changes 💫 \n#KeepGoing",
     image_urls: [],
     post_type: "text",
     likes_count: [],
@@ -166,7 +166,7 @@ export const dummyPostsData = [
   {
     _id: "e0ed3d92-922c-4af6-b6e7-5faed9fd2dde",
     user: dummyUserData3,
-    content: "Together we achieve more 💪 #TeamworkMakesTheDreamWork",
+    content: "Together we achieve more 💪 \n#TeamworkMakesTheDreamWork",
     image_urls: [
       "https://images.pexels.com/photos/3184295/pexels-photo-3184295.jpeg",
       "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg",
