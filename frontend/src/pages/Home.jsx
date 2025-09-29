@@ -4,6 +4,7 @@ import SkeletonLoader from "../components/SkeletonLoader";
 import StoriesBar from "../components/StoriesBar";
 import PostCard from "../components/PostCard";
 import RecentMessages from "../components/RecentMessages";
+import { MessageCircleHeart } from "lucide-react";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
@@ -20,7 +21,7 @@ export default function Home() {
 
   return !loading ? (
     <div
-      className="h-full overflow-y-scroll no-scrollbar py-2 xl:pr-5 flex
+      className="relative h-full overflow-y-scroll no-scrollbar py-2 xl:pr-5 flex
       items-start justify-center xl:gap-8"
     >
       {/* Stories and post list */}
@@ -55,6 +56,10 @@ export default function Home() {
 
         <RecentMessages />
       </div>
+
+      <button className="fixed bottom-8 right-8 bg-white shadow-lg px-15 py-4 rounded-full border border-neutral-200 text-slate-800 flex items-center gap-2 font-medium">
+        <MessageCircleHeart /> Messages
+      </button>
     </div>
   ) : (
     <SkeletonLoader />

@@ -20,7 +20,7 @@ export const assets = {
 
 export const menuItemsData = [
   { to: "/", label: "Home", Icon: HouseHeart },
-  { to: "/inbox", label: "Inbox", Icon: MessageCircleHeart },
+  { to: "/inbox", label: "Messages", Icon: MessageCircleHeart },
   { to: "/connections", label: "Connections", Icon: UsersRound },
   { to: "/explore", label: "Explore", Icon: Search },
   { to: "/profile", label: "Profile", Icon: UserRound },
