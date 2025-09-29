@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { dummyPostsData } from "../assets/assets";
+import { assets, dummyPostsData } from "../assets/assets";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StoriesBar from "../components/StoriesBar";
 import PostCard from "../components/PostCard";
+import RecentMessages from "../components/RecentMessages";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
@@ -34,12 +35,25 @@ export default function Home() {
       </div>
 
       {/* Right sidebar */}
-      <div>
-        <div>
-          <h1>Sponsored</h1>
+      <div className="max-xl:hidden sticky top-0">
+        <div className="max-w-xs bg-white text-xs p-4 rounded inline-flex flex-col gap-2 shadow font-medium">
+          <h3 className="text-slate-900 font-semibold">Sponsored</h3>
+          <img
+            src={assets.sponsored_img}
+            alt="sponsored image"
+            className="w-full h-full rounded"
+          />
+          <p className="text-slate-700">Power Redefined</p>
+          <p className="text-slate-500">
+            Experience the future with myPhone69 Pro Max
+          </p>
+
+          <button className="p-2 rounded font-semibold text-sm text-white bg-blue-500 hover:bg-blue-600 cursor-pointer">
+            Buy Now
+          </button>
         </div>
 
-        <h1>Recent messages</h1>
+        <RecentMessages />
       </div>
     </div>
   ) : (
