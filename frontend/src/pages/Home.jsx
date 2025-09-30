@@ -22,7 +22,7 @@ export default function Home() {
 
   return !loading ? (
     <div
-      className="relative h-full overflow-y-scroll no-scrollbar py-2 xl:pr-5 flex
+      className="relative h-full overflow-y-scroll no-scrollbar py-12 xl:pr-5 flex
       items-start justify-center xl:gap-8"
     >
       {/* Stories and post list */}
@@ -58,11 +58,13 @@ export default function Home() {
         <RecentMessages />
       </div>
 
+      {/* Floating message button */}
       <Link
         to={"/inbox"}
-        className="fixed bottom-8 right-8 bg-white shadow-lg px-15 py-4 rounded-full border border-neutral-200 text-slate-800 flex items-center gap-2 font-medium"
+        className="fixed bottom-8 right-8 bg-white shadow-lg p-4 md:px-15 md:py-4 rounded-full border border-neutral-200 text-slate-800 flex items-center gap-2 font-medium"
       >
-        <MessageCircleHeart /> Messages
+        <MessageCircleHeart />
+        <span className="hidden md:inline">Messages</span>
       </Link>
     </div>
   ) : (

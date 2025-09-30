@@ -25,7 +25,7 @@ export default function PostCard({ post }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white p-4 my-6 space-y-4 w-full max-w-2xl">
+    <div className="bg-white p-4 my-6 space-y-4 w-full max-w-3xl">
       {/* User info */}
       <div
         onClick={() => navigate(`/profile/${post.user._id}`)}

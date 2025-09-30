@@ -38,10 +38,10 @@ export default function StoriesBar() {
       el.removeEventListener("scroll", checkScroll);
       window.removeEventListener("resize", checkScroll);
     };
-  }, []);
+  }, [stories]);
 
   return (
-    <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-2xl px-4">
+    <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-3xl px-4">
       {showScrollArrow && (
         <button
           onClick={() => {
