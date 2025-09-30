@@ -18,7 +18,7 @@ export default function Messages() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-slate-900 my-8">Messages</h1>
+        <h1 className="text-2xl font-bold text-slate-900 my-6">Messages</h1>
 
         {/* Connected users */}
         <div className="flex flex-col gap-2">
@@ -26,7 +26,7 @@ export default function Messages() {
             <div
               onClick={() => navigate(`/inbox/${user._id}`)}
               key={user._id}
-              className="flex gap-6 p-4 bg-white shadow rounded-lg cursor-pointer"
+              className="flex gap-6 p-4 bg-white shadow border border-gray-100 rounded-lg cursor-pointer"
             >
               <Link
                 to={`/profile/${user._id}`}
