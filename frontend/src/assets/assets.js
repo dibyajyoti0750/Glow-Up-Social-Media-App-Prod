@@ -51,6 +51,7 @@ const dummyUserData2 = {
   full_name: "John Mark Peter",
   profile_picture:
     "https://images.pexels.com/photos/27897903/pexels-photo-27897903.jpeg",
+  bio: "Coffee enthusiast | Avid reader | Always chasing new experiences and good conversations",
 };
 
 const dummyUserData3 = {
@@ -60,6 +61,7 @@ const dummyUserData3 = {
   full_name: "Andrew Smith",
   profile_picture:
     "https://images.pexels.com/photos/3394657/pexels-photo-3394657.jpeg",
+  bio: "Part-time dreamer, full-time explorer | Making life a little brighter one day at a time | Sarcasm included",
 };
 
 export const dummyStoriesData = [

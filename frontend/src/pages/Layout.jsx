@@ -20,12 +20,12 @@ export default function Layout() {
       {sidebarOpen ? (
         <X
           onClick={() => setSidebarOpen(false)}
-          className="absolute top-3 right-3 p-2 z-10 bg-white rounded-md shadow w-10 h-10 text-gray-700 sm:hidden cursor-pointer"
+          className="absolute top-2 right-2 p-2 z-10 bg-white rounded-md shadow w-10 h-10 text-gray-700 sm:hidden cursor-pointer"
         />
       ) : (
         <Menu
           onClick={() => setSidebarOpen(true)}
-          className="absolute top-3 right-3 p-2 z-10 bg-white rounded-md shadow w-10 h-10 text-gray-700 sm:hidden cursor-pointer"
+          className="absolute top-2 right-2 p-2 z-10 bg-white rounded-md shadow w-10 h-10 text-gray-700 sm:hidden cursor-pointer"
         />
       )}
     </div>
