@@ -39,14 +39,14 @@ export default function Messages() {
                 />
               </Link>
 
-              <div className="flex-1">
+              <div className="flex-1 font-medium">
                 <div className="flex items-center gap-1">
-                  <p className="font-medium text-slate-700">{user.full_name}</p>
+                  <p className="text-slate-700">{user.full_name}</p>
                   {user.is_verified && (
                     <BadgeCheck className="w-4 h-4 text-sky-600" />
                   )}
                 </div>
-                <p className="text-sm text-slate-500">@{user.username}</p>
+                <p className="text-xs text-slate-500">@{user.username}</p>
                 <p className="text-sm text-gray-600">{user.bio}</p>
               </div>
             </div>

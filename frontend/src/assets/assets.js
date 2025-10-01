@@ -62,6 +62,7 @@ const dummyUserData3 = {
   profile_picture:
     "https://images.pexels.com/photos/3394657/pexels-photo-3394657.jpeg",
   bio: "Part-time dreamer, full-time explorer | Making life a little brighter one day at a time | Sarcasm included",
+  is_verified: false,
 };
 
 export const dummyStoriesData = [
@@ -270,8 +271,12 @@ export const dummyConnectionsData = [
   dummyUserData3,
 ];
 
-export const dummyFollowersData = [dummyUserData2, dummyUserData3];
+export const dummyFollowersData = [
+  dummyUserData,
+  dummyUserData2,
+  dummyUserData3,
+];
 
 export const dummyFollowingData = [dummyUserData2, dummyUserData3];
 
-export const dummyPendingConnectionsData = [dummyUserData];
+export const dummyPendingConnectionsData = [dummyUserData, dummyUserData2];

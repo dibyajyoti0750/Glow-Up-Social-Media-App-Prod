@@ -11,6 +11,7 @@ import {
   UserRoundCheck,
   UserRoundPen,
   MessageCircle,
+  BadgeCheck,
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
@@ -33,9 +34,9 @@ export default function Connections() {
         {/* Title */}
         <h1 className="text-2xl font-bold text-slate-900 my-6">Connections</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-8">
           {/* Left column - Counts */}
-          <div className="col-span-1">
+          <div className="col-span-1 mb-6">
             <div className="p-6 border border-gray-100 shadow-sm rounded-lg h-fit">
               <h2 className="mb-4 font-medium">Network overview</h2>
               <div className="grid grid-cols-2 gap-6">
@@ -55,7 +56,7 @@ export default function Connections() {
           {/* Right column - Tabs + Users */}
           <div className="col-span-2">
             {/* Tabs */}
-            <div className="flex flex-wrap justify-between items-center border border-gray-100 rounded-lg p-1 shadow-sm mb-6">
+            <div className="flex justify-around md:justify-between items-center border border-gray-100 rounded-lg p-1 shadow-sm mb-6">
               {dataArray.map((tab) => (
                 <button
                   onClick={() => setCurrentTab(tab.label)}
@@ -63,7 +64,7 @@ export default function Connections() {
                   className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors cursor-pointer ${
                     currentTab === tab.label
                       ? "bg-gray-100 font-medium text-black"
-                      : "text-gray-500 hover:text-black hover:bg-gray-100"
+                      : "text-gray-500 hover:text-black"
                   }`}
                 >
                   <tab.Icon className="w-4 h-4" />
@@ -77,27 +78,29 @@ export default function Connections() {
               ))}
             </div>
 
-            {/* < ----- Todo ----- > */}
             {/* Users */}
-            <div className="flex flex-wrap gap-6 mt-6">
+            <div className="flex flex-wrap gap-4 mt-6 font-medium">
               {dataArray
                 .find((item) => item.label === currentTab)
                 .value.map((user) => (
                   <div
                     key={user._id}
-                    className="w-full max-w-[22rem] flex gap-5 p-6 bg-white shadow rounded-lg"
+                    className="w-full flex gap-4 p-4 bg-white shadow rounded-lg"
                   >
                     <img
                       src={user.profile_picture}
                       alt="profile picture"
-                      className="rounded-full w-12 h-12 shadow-sm mx-auto"
+                      className="rounded-full w-12 h-12 shadow-sm"
                     />
                     <div className="flex-1">
-                      <p className="font-medium text-slate-700">
-                        {user.full_name}
-                      </p>
-                      <p className="text-slate-500">@{user.username}</p>
-                      <p className="text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <p className="text-slate-700">{user.full_name}</p>
+                        {user.is_verified && (
+                          <BadgeCheck className="w-4 h-4 text-sky-600" />
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-500">@{user.username}</p>
+                      <p className="text-sm text-slate-600">
                         {user.bio.slice(0, 30)}...
                       </p>
 
@@ -108,6 +111,14 @@ export default function Connections() {
                         >
                           View Profile
                         </button>
+
+                        {currentTab === "Followers" &&
+                          // Check if in my following list, there is any user with the same id as this current follower.
+                          !following.some((f) => f._id === user._id) && (
+                            <button className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer">
+                              Follow Back
+                            </button>
+                          )}
 
                         {currentTab === "Following" && (
                           <button className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer">
