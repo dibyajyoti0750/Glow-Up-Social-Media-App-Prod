@@ -107,7 +107,7 @@ export default function Connections() {
                       <div className="flex max-sm:flex-col gap-2 mt-4">
                         <button
                           onClick={() => navigate(`/profile/${user._id}`)}
-                          className="w-full p-2 text-sm rounded bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:scale-95 transition text-white cursor-pointer"
+                          className="w-full px-3 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 active:scale-95 cursor-pointer transition"
                         >
                           View Profile
                         </button>
@@ -115,19 +115,19 @@ export default function Connections() {
                         {currentTab === "Followers" &&
                           // Check if in my following list, there is any user with the same id as this current follower.
                           !following.some((f) => f._id === user._id) && (
-                            <button className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer">
+                            <button className="w-full px-3 py-2 bg-gray-100 text-black text-sm rounded-lg hover:bg-gray-200 active:scale-95 cursor-pointer transition">
                               Follow Back
                             </button>
                           )}
 
                         {currentTab === "Following" && (
-                          <button className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer">
+                          <button className="w-full px-3 py-2 bg-gray-100 text-black text-sm rounded-lg hover:bg-gray-200 active:scale-95 cursor-pointer transition">
                             Unfollow
                           </button>
                         )}
 
                         {currentTab === "Pending" && (
-                          <button className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer">
+                          <button className="w-full px-3 py-2 bg-gray-100 text-black text-sm rounded-lg hover:bg-gray-200 active:scale-95 cursor-pointer transition">
                             Accept
                           </button>
                         )}
@@ -135,7 +135,7 @@ export default function Connections() {
                         {currentTab === "Connections" && (
                           <button
                             onClick={() => navigate(`/inbox/${user._id}`)}
-                            className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer flex items-center justify-center gap-1"
+                            className="w-full px-3 py-2 bg-gray-100 text-black text-sm rounded-lg hover:bg-gray-200 active:scale-95 cursor-pointer transition flex items-center justify-center gap-1"
                           >
                             <MessageCircle className="w-4 h-4" />
                             Message
