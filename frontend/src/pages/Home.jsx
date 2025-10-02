@@ -41,6 +41,7 @@ export default function Home() {
         <div className="max-w-xs bg-white text-xs p-4 rounded inline-flex flex-col gap-2 shadow font-medium">
           <h3 className="text-slate-900 font-semibold">Sponsored</h3>
           <img
+            loading="lazy"
             src={assets.sponsored_img}
             alt="sponsored image"
             className="w-full h-full rounded"

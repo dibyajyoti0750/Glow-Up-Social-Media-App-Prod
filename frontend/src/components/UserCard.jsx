@@ -13,6 +13,7 @@ export default function UserCard({ user }) {
       {/* Cover + Profile */}
       <div className="relative">
         <img
+          loading="lazy"
           src={user.cover_photo}
           alt="cover"
           className="w-full h-24 object-cover rounded-t-xl"

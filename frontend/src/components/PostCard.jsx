@@ -63,6 +63,7 @@ export default function PostCard({ post }) {
       <div className="grid grid-cols-2 gap-2">
         {post.image_urls.map((img, idx) => (
           <img
+            loading="lazy"
             key={idx}
             src={img}
             alt="post image"
