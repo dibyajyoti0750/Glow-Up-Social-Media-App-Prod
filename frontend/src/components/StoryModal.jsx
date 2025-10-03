@@ -50,14 +50,19 @@ export default function StoryModal({ setShowModal, fetchStories }) {
   };
 
   const handleAddStory = async () => {
-    setShowModal(false);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+        setShowModal(false);
+      }, 5000);
+    });
   };
 
   return (
-    <div className="fixed inset-0 z-50 min-h-screen bg-black/70 backdrop-blur-xs text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+    <div className="fixed inset-0 z-20 min-h-screen bg-black/70 backdrop-blur-sm text-white flex items-center justify-center p-4">
+      <div className="w-full max-w-xl overflow-hidden animate-fade-in">
         <div className="text-center mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-medium">Add Story</h2>
+          <h2 className="text-xl font-medium">Add Story</h2>
 
           <button
             title="close"

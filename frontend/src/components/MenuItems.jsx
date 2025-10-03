@@ -3,7 +3,7 @@ import { menuItemsData } from "../assets/assets";
 
 export default function MenuItems({ setSidebarOpen }) {
   return (
-    <div className="px-6 text-gray-700 space-y-2 font-semibold">
+    <div className="text-gray-700 space-y-2 font-semibold">
       {menuItemsData.map(({ to, label, Icon }) => (
         <NavLink
           key={to}

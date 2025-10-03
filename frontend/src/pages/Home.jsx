@@ -6,10 +6,13 @@ import PostCard from "../components/PostCard";
 import RecentMessages from "../components/RecentMessages";
 import { MessageCircleHeart } from "lucide-react";
 import { Link } from "react-router-dom";
+import CreatePost from "../components/CreatePost";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
 
   const fetchFeeds = async () => {
     setFeeds(dummyPostsData);
@@ -28,6 +31,8 @@ export default function Home() {
       {/* Stories and post list */}
       <div>
         <StoriesBar />
+
+        <CreatePost profile_picture={user.imageUrl} />
 
         <div>
           {feeds.map((post) => (

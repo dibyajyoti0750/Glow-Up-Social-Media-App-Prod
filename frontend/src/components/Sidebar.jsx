@@ -5,9 +5,11 @@ import MenuItems from "./MenuItems";
 import { Ellipsis, LogOut, Settings } from "lucide-react";
 import { useState } from "react";
 import Popover from "@mui/material/Popover";
+import CreatePostModal from "./CreatePostModal";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const navigate = useNavigate();
   const user = dummyUserData;
   const { openUserProfile, signOut } = useClerk();
@@ -29,10 +31,10 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
         sidebarOpen ? "translate-x-0" : "max-sm:-translate-x-full"
       } transition-all duration-300 ease-in-out`}
     >
-      <div className="w-full">
+      <div className="w-full px-4">
         <div
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 mx-8 my-4 cursor-pointer"
+          className="flex items-center gap-2 my-4 cursor-pointer"
         >
           <img src={assets.logo} alt="Logo" className="w-10" />
           <h3 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-red-400 to-red-700 bg-clip-text text-transparent">
@@ -42,9 +44,12 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
         <MenuItems setSidebarOpen={setSidebarOpen} />
 
-        <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 text-white font-bold text-lg rounded-full shadow-2xl hover:from-blue-600 hover:via-blue-700 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-70 active:bg-blue-800 active:shadow-inner transform transition duration-500 ease-in-out mx-4 my-6 cursor-pointer">
+        <button
+          onClick={() => setShowCreatePostModal(true)}
+          className="w-full flex items-center justify-center p-3 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 text-white font-bold text-lg rounded-full shadow-2xl hover:from-blue-600 hover:via-blue-700 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-70 active:bg-blue-800 active:shadow-inner transform transition duration-500 ease-in-out mx-auto my-4 cursor-pointer"
+        >
           Post
-        </div>
+        </button>
       </div>
 
       <div className="w-full p-4 px-7 flex items-center justify-between">
@@ -92,6 +97,10 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
         </Popover>
       </div>
+
+      {showCreatePostModal && (
+        <CreatePostModal setShowModal={setShowCreatePostModal} />
+      )}
     </div>
   );
 }

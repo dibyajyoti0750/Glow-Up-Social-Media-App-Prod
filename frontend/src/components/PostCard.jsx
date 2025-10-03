@@ -25,7 +25,7 @@ export default function PostCard({ post }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white p-4 my-6 space-y-4 w-full max-w-3xl">
+    <div className="bg-white py-4 my-6 space-y-4 w-full max-w-3xl">
       {/* User info */}
       <div
         onClick={() => navigate(`/profile/${post.user._id}`)}
@@ -34,7 +34,7 @@ export default function PostCard({ post }) {
         <img
           src={post.user.profile_picture}
           alt="profile picture"
-          className="w-9 h-9 rounded-full shadow"
+          className="w-10 h-10 rounded-full shadow"
         />
 
         <div>
