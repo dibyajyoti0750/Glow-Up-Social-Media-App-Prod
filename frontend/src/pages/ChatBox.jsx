@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { dummyMessagesData, dummyUserData } from "../assets/assets";
-import { Camera, Image, SendHorizonal, X } from "lucide-react";
+import { Camera, Image, SendHorizonal, Verified, X } from "lucide-react";
 
 export default function ChatBox() {
   const messages = dummyMessagesData;
@@ -28,7 +28,12 @@ export default function ChatBox() {
             className="size-8 rounded-full"
           />
           <div>
-            <p className="font-medium">{user.full_name}</p>
+            <div className="flex items-center gap-1">
+              <p className="font-medium">{user.full_name}</p>
+              {user.is_verified && (
+                <Verified className="w-4 h-4 text-sky-600" />
+              )}
+            </div>
             <p className="text-xs text-gray-500">@{user.username}</p>
           </div>
         </div>

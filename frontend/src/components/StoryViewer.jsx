@@ -1,4 +1,4 @@
-import { BadgeCheck, X } from "lucide-react";
+import { Verified, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
@@ -102,7 +102,7 @@ export default function StoryViewer({ viewStory, setViewStory }) {
         <div className="flex flex-col text-white">
           <div className="flex items-center gap-1  font-medium">
             {viewStory.user?.username}
-            {viewStory.user?.is_verified && <BadgeCheck size={18} />}
+            {viewStory.user?.is_verified && <Verified size={18} />}
           </div>
           <span className="text-xs font-extralight">
             {moment(viewStory.createdAt).fromNow()}

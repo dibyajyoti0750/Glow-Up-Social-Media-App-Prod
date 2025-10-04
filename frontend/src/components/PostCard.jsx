@@ -2,7 +2,7 @@ import { useState } from "react";
 import { dummyUserData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import {
-  BadgeCheck,
+  Verified,
   Bookmark,
   Heart,
   MessageCircle,
@@ -41,7 +41,7 @@ export default function PostCard({ post }) {
           <div className="flex items-center gap-1 text-sm">
             <span>{post.user.full_name}</span>
             {post.user.is_verified && (
-              <BadgeCheck className="w-4 h-4 text-sky-600" />
+              <Verified className="w-4 h-4 text-sky-600" />
             )}
           </div>
 

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { dummyConnectionsData } from "../assets/assets";
-import { BadgeCheck, Loader, Search } from "lucide-react";
+import { Verified, Loader, Search } from "lucide-react";
 import { useState } from "react";
 
 export default function Messages() {
@@ -65,7 +65,7 @@ export default function Messages() {
                 <div className="flex items-center gap-1">
                   <p className="text-slate-700">{user.full_name}</p>
                   {user.is_verified && (
-                    <BadgeCheck className="w-4 h-4 text-sky-600" />
+                    <Verified className="w-4 h-4 text-sky-600" />
                   )}
                 </div>
                 <p className="text-xs text-slate-500">@{user.username}</p>

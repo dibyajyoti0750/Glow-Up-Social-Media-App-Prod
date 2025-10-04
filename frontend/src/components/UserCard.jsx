@@ -1,4 +1,4 @@
-import { BadgeCheck, Plus } from "lucide-react";
+import { Verified, Plus } from "lucide-react";
 import { dummyUserData } from "../assets/assets";
 
 export default function UserCard({ user }) {
@@ -31,7 +31,7 @@ export default function UserCard({ user }) {
       <div className="pt-10 px-4 pb-4 text-center">
         <h2 className="text-base font-semibold text-gray-900 flex items-center justify-center gap-1">
           {user.full_name}
-          {user.is_verified && <BadgeCheck className="w-4 h-4 text-blue-500" />}
+          {user.is_verified && <Verified className="w-4 h-4 text-blue-500" />}
         </h2>
         <p className="text-xs text-gray-500">@{user.username}</p>
 
