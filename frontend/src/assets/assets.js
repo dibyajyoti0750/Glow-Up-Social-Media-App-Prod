@@ -220,8 +220,8 @@ export const dummyRecentMessagesData = [
 export const dummyMessagesData = [
   {
     _id: "6878cc3217a54e4d37480122",
-    from_user_id: "user_2zwZSCMRXQ9GaEEVLgm6akQo96i",
-    to_user_id: "user_2zdFoZib5lNr614LgkONdD8WG32",
+    from_user_id: "0900da2c-10fe-4645-a429-0ac7af6739f5",
+    to_user_id: "user_2",
     text: "",
     message_type: "image",
     media_url:
@@ -232,9 +232,9 @@ export const dummyMessagesData = [
   },
   {
     _id: "6878cc3c17a54e4d3748012f",
-    from_user_id: "user_2zwZSCMRXQ9GaEEVLgm6akQo96i",
-    to_user_id: "user_2zdFoZib5lNr614LgkONdD8WG32",
-    text: "This is a Samsung Tablet",
+    from_user_id: "0900da2c-10fe-4645-a429-0ac7af6739f5",
+    to_user_id: "user_2",
+    text: "This is a Samsung Tablet and I am thrilled to tell you that I bought this from flipkart big billion days",
     message_type: "text",
     media_url: "",
     createdAt: "2025-07-17T10:11:08.437Z",
@@ -243,9 +243,9 @@ export const dummyMessagesData = [
   },
   {
     _id: "68835ffc6e4b42b685069def",
-    from_user_id: "user_2zdFoZib5lNr614LgkONdD8WG32",
-    to_user_id: "user_2zwZSCMRXQ9GaEEVLgm6akQo96i",
-    text: "yeah, this tablet is good",
+    from_user_id: "user_2",
+    to_user_id: "0900da2c-10fe-4645-a429-0ac7af6739f5",
+    text: "Wow, congrats 🎉😊 \nIs this tablet any good for regular use?",
     message_type: "text",
     media_url: "",
     seen: false,
@@ -254,9 +254,9 @@ export const dummyMessagesData = [
   },
   {
     _id: "6878cc2817a54e4d3748010c",
-    from_user_id: "user_2zdFoZib5lNr614LgkONdD8WG32",
-    to_user_id: "user_2zwZSCMRXQ9GaEEVLgm6akQo96i",
-    text: "you can purchase it from amazon",
+    from_user_id: "0900da2c-10fe-4645-a429-0ac7af6739f5",
+    to_user_id: "user_2",
+    text: "Yes, you can purchase it from flipkart",
     message_type: "text",
     media_url: "",
     createdAt: "2025-08-17T10:10:48.956Z",

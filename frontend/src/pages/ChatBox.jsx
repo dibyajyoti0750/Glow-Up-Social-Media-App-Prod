@@ -1,3 +1,127 @@
+import { useEffect, useRef, useState } from "react";
+import { dummyMessagesData, dummyUserData } from "../assets/assets";
+import { Camera, Image, SendHorizonal, X } from "lucide-react";
+
 export default function ChatBox() {
-  return <div></div>;
+  const messages = dummyMessagesData;
+  const [text, setText] = useState("");
+  const [image, setImage] = useState(null);
+  const [user, setUser] = useState(dummyUserData);
+  const messagesEndRef = useRef(null);
+
+  const sendMessage = async () => {
+    console.log(text);
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  return (
+    user && (
+      <div className="flex flex-col h-screen">
+        <div className="flex items-center gap-2 p-2 md:px-10 xl:pl-96 bg-gray-50 border-b border-gray-300">
+          <img
+            src={user.profile_picture}
+            alt="profile picture"
+            className="size-8 rounded-full"
+          />
+
+          <div>
+            <p className="font-medium">{user.full_name}</p>
+            <p className="text-xs text-gray-500 -mt-1.5">{user.username}</p>
+          </div>
+        </div>
+
+        <div className="p-5 md:px-10 h-full overflow-y-scroll">
+          <div className="space-y-4 max-w-4xl mx-auto">
+            {messages
+              .toSorted((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+              .map((message, idx) => (
+                <div
+                  key={idx}
+                  className={`flex flex-col ${
+                    message.to_user_id !== user._id
+                      ? "items-start"
+                      : "items-end"
+                  }`}
+                >
+                  <div>
+                    {message.message_type === "image" && (
+                      <img
+                        src={message.media_url}
+                        alt="image"
+                        className="w-full max-w-sm rounded-2xl"
+                      />
+                    )}
+                    <p
+                      className={`${
+                        message.message_type !== "image" &&
+                        "p-3 text-sm max-w-sm rounded-2xl bg-gray-100/80 text-slate-700 whitespace-pre-line"
+                      }
+                    ${
+                      message.to_user_id !== user._id
+                        ? "rounded-bl-none"
+                        : "rounded-br-none bg-indigo-600 text-white"
+                    }`}
+                    >
+                      {message.text}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+            <div ref={messagesEndRef}></div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 w-full max-w-xl md:max-w-2xl mx-auto bg-gray-100/80 rounded-3xl mb-5">
+          {image && (
+            <div className="relative group w-24 h-24 mx-3 mt-4">
+              <img
+                src={URL.createObjectURL(image)}
+                alt=""
+                className="object-cover w-full h-full rounded-2xl transition duration-200"
+              />
+
+              <div
+                onClick={() => setImage(null)}
+                className="absolute hidden group-hover:flex justify-center items-center top-0 right-0 bottom-0 left-0 bg-black/10 cursor-pointer rounded-xl"
+              >
+                <X className="text-white" />
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 p-3">
+            <label htmlFor="image">
+              <div className="w-9 h-9 flex items-center justify-center bg-indigo-600 rounded-full p-1.5">
+                <Camera className="text-white cursor-pointer" />
+                <input
+                  id="image"
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  accept="image/*"
+                  hidden
+                />
+              </div>
+            </label>
+
+            <input
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              type="text"
+              placeholder="Message..."
+              className="flex-1 outline-none text-slate-700"
+            />
+
+            <button onClick={sendMessage} className="me-2">
+              <SendHorizonal />
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  );
 }
