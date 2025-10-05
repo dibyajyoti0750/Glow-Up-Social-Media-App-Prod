@@ -20,8 +20,8 @@ export default function CreatePostModal({ setShowModal }) {
   };
 
   return (
-    <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70 text-white backdrop-blur-sm">
-      <div className="w-full max-w-2xl overflow-hidden animate-fade-in">
+    <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 text-white backdrop-blur-sm">
+      <div className="w-full max-w-2xl overflow-hidden p-2 mx-auto animate-fade-in">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-medium">Create Post</h2>
