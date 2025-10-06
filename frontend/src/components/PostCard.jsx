@@ -25,7 +25,7 @@ export default function PostCard({ post }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white py-4 my-6 space-y-4 w-full max-w-3xl">
+    <div className="bg-white p-4 my-6 space-y-4 w-full max-w-3xl">
       {/* User info */}
       <div
         onClick={() => navigate(`/profile/${post.user._id}`)}
@@ -67,6 +67,8 @@ export default function PostCard({ post }) {
             key={idx}
             src={img}
             alt="post image"
+            width={400}
+            height={300}
             className={`w-full h-48 object-cover rounded ${
               post.image_urls.length === 1 && "col-span-2 h-auto"
             }`}
@@ -96,13 +98,11 @@ export default function PostCard({ post }) {
           <div className="text-gray-500 cursor-pointer">
             View all 40 comments
           </div>
-          <div className="flex items-center justify-between text-gray-500 cursor-pointer">
+          <div className="flex items-center justify-between text-gray-500 cursor-pointer pb-4 border-b border-neutral-200">
             Add a comment... <Smile className="w-[15px] h-[15px]" />
           </div>
         </div>
       </div>
-
-      <hr className="border-neutral-200" />
     </div>
   );
 }

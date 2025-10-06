@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { dummyPostsData, dummyUserData } from "../assets/assets";
 import Loading from "../components/Loading";
 import PostCard from "../components/PostCard";
@@ -88,19 +88,19 @@ export default function Profile() {
                 .filter((post) => post.image_urls.length > 0)
                 .map((post) =>
                   post.image_urls.map((image, idx) => (
-                    <Link
-                      target="_blank"
-                      to={image}
+                    <div
                       key={idx}
-                      className="relative group block"
+                      className="relative group block cursor-pointer"
                     >
                       <img
                         src={image}
                         alt="post"
+                        width={400}
+                        height={300}
                         className="w-full aspect-square object-cover"
                       />
                       {/* Hover overlay */}
-                      <div className="absolute inset-0 flex justify-center items-center gap-4 text-white font-medium bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300">
+                      <div className="absolute inset-0 flex justify-center items-center gap-4 text-white font-medium bg-black/60 opacity-0 group-hover:opacity-100 transition duration-200">
                         <div className="flex gap-1 items-center">
                           <Heart className="w-5 h-5" />{" "}
                           {post.likes_count.length}
@@ -109,7 +109,7 @@ export default function Profile() {
                           <MessageCircle className="w-5 h-5" /> 10
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))
                 )}
             </div>

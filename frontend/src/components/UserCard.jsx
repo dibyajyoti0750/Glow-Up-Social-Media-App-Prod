@@ -1,5 +1,6 @@
 import { Verified, Plus } from "lucide-react";
 import { dummyUserData } from "../assets/assets";
+import { Link } from "react-router-dom";
 
 export default function UserCard({ user }) {
   const currentUser = dummyUserData;
@@ -19,11 +20,13 @@ export default function UserCard({ user }) {
           className="w-full h-24 object-cover rounded-t-xl"
         />
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-          <img
-            src={user.profile_picture}
-            alt={user.full_name}
-            className="w-16 h-16 rounded-full border-4 border-white object-cover shadow"
-          />
+          <Link to={`/profile/${user._id}`}>
+            <img
+              src={user.profile_picture}
+              alt={user.full_name}
+              className="w-16 h-16 rounded-full border-4 border-white object-cover shadow"
+            />
+          </Link>
         </div>
       </div>
 
