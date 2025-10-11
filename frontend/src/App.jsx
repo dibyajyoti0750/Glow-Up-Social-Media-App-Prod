@@ -7,11 +7,26 @@ import Connections from "./pages/Connections";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Layout from "./pages/Layout";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 export default function App() {
   const { user } = useUser();
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const token = await getToken();
+        console.log(token);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchToken();
+  }, [getToken]);
 
   return (
     <>

@@ -112,4 +112,51 @@ export const discoverUsers = wrapAsync(async (req, res) => {
   return res.json({ success: true, users: filteredUsers });
 });
 
-// Todo => followUser function
+// Follow
+export const followUser = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { id } = req.body;
+
+  if (userId == id) {
+    return res.json({ success: false, message: "You cannot follow yourself" });
+  }
+
+  const user = await User.findById(userId);
+
+  if (user.following.includes(id)) {
+    return res.json({
+      success: false,
+      message: "You're already following this user",
+    });
+  }
+
+  user.following.push(id);
+  await user.save();
+
+  const toUser = await User.findById(id);
+  toUser.followers.push(userId);
+  await toUser.save();
+
+  return res.json({ success: true, message: "You're now following this user" });
+});
+
+// Unfollow user
+export const unfollowUser = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { id } = req.body;
+
+  const user = await User.findById(userId);
+  user.following = user.following.filter((followedId) => followedId !== id);
+  await user.save();
+
+  const toUser = await User.findById(id);
+  toUser.followers = toUser.followers.filter(
+    (followerId) => followerId !== userId
+  );
+  await toUser.save();
+
+  return res.json({
+    success: true,
+    message: "You're no longer following this user",
+  });
+});
