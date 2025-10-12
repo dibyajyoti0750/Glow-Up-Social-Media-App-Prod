@@ -4,6 +4,7 @@ import ExpressError from "../utils/ExpressError.js";
 import imagekit from "../config/imageKit.js";
 import fs from "fs";
 import Connection from "../models/Connection.js";
+import { inngest } from "../inngest/index.js";
 
 // Get user data
 export const getUserData = wrapAsync(async (req, res) => {
@@ -191,7 +192,15 @@ export const sendConnectionRequest = wrapAsync(async (req, res) => {
   });
 
   if (!connection) {
-    await Connection.create({ from_user_id: userId, to_user_id: id });
+    const newConnection = await Connection.create({
+      from_user_id: userId,
+      to_user_id: id,
+    });
+
+    await inngest.send({
+      name: "app/connection-request",
+      data: { connectionId: newConnection._id },
+    });
 
     return res.json({
       success: true,
