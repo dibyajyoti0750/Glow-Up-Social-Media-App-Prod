@@ -1,7 +1,7 @@
 import wrapAsync from "../middlewares/wrapAsync.js";
 import User from "../models/User.js";
 import ExpressError from "../utils/ExpressError.js";
-import imagekit from "../config/imagekit.js";
+import imagekit from "../config/imageKit.js";
 import fs from "fs";
 import Connection from "../models/Connection.js";
 
