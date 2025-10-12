@@ -71,7 +71,7 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
         "from_user_id to_user_id"
       );
 
-      const subject = `You've got a new connection request from ${connection.from_user_id}`;
+      const subject = `You've got a new connection request from ${connection.from_user_id.full_name}`;
       const body = `<!DOCTYPE html>
       <html>
         <body style="font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 30px;">
