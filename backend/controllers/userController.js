@@ -5,6 +5,7 @@ import imagekit from "../config/imageKit.js";
 import fs from "fs";
 import Connection from "../models/Connection.js";
 import { inngest } from "../inngest/index.js";
+import Post from "../models/Post.js";
 
 // Get user data
 export const getUserData = wrapAsync(async (req, res) => {
@@ -268,4 +269,18 @@ export const acceptConnectionRequest = wrapAsync(async (req, res) => {
   await connection.save();
 
   return res.json({ success: true, message: "Connection request accepted" });
+});
+
+// Get user profiles
+export const getUserProfiles = wrapAsync(async (req, res) => {
+  const { profileId } = req.body;
+  const profile = await User.findById(profileId);
+
+  if (!profile) {
+    return res.json({ success: false, message: "Profile not found" });
+  }
+
+  const posts = await Post.find({ user: profileId }).populate("user");
+
+  return res.json({ success: true, profile, posts });
 });
