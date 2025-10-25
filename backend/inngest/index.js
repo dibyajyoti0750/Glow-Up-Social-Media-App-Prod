@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Connection from "../models/Connection.js";
 import sendEmail from "../config/nodeMailer.js";
 import Story from "../models/Story.js";
+import Message from "../models/Message.js";
 
 export const inngest = new Inngest({ id: "glowup" });
 
@@ -204,10 +205,64 @@ const deleteStory = inngest.createFunction(
   }
 );
 
+const sendNotificationsOfUnseenMessages = inngest.createFunction(
+  { id: "send-unseen-messages-notification" },
+  { cron: "TZ=Asia/Kolkata 0 22 * * *" }, // every day at 10 AM
+  async ({ step }) => {
+    const messages = await Message.find({ seen: false }).populate("to_user_id");
+    const unseenCount = {};
+
+    messages.map((message) => {
+      unseenCount[message.to_user_id._id] =
+        (unseenCount[message.to_user_id._id] || 0) + 1;
+    });
+
+    for (const userId in unseenCount) {
+      const user = await User.findById(userId);
+
+      const subject = `📬 You have ${unseenCount[userId]} unseen messages`;
+
+      const body = `
+      <div style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 24px; border-radius: 8px; max-width: 500px; margin: auto; color: #111827;">
+        <h2 style="color: #111827;">Hi ${user.full_name},</h2>
+        <p style="font-size: 16px; line-height: 1.5; margin: 16px 0;">
+        You have <strong>${unseenCount[userId]}</strong> unseen message${
+        unseenCount[userId] > 1 ? "s" : ""
+      }.
+        </p>
+        <p style="font-size: 16px; line-height: 1.5; margin: 16px 0;">
+        Click 
+        <a href="${
+          process.env.FRONTEND_URL
+        }/messages" style="color: #10b981; text-decoration: none; font-weight: bold;">
+          here
+        </a> 
+        to view them.
+        </p>
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+        <p style="font-size: 14px; color: #6b7280;">
+        Thanks,<br />
+        <strong>GlowUp</strong>
+        </p>
+      </div>
+`;
+
+      await sendEmail({
+        to: user.email,
+        subject,
+        body,
+      });
+    }
+
+    return { message: "Notification sent." };
+  }
+);
+
 export const functions = [
   syncUserCreation,
   syncUserUpdation,
   syncUserDeletion,
   sendNewConnectionRequestReminder,
   deleteStory,
+  sendNotificationsOfUnseenMessages,
 ];
