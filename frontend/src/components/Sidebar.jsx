@@ -6,12 +6,13 @@ import { Ellipsis, LogOut, Settings } from "lucide-react";
 import { useState } from "react";
 import Popover from "@mui/material/Popover";
 import CreatePostModal from "./CreatePostModal";
+import { useSelector } from "react-redux";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const navigate = useNavigate();
-  const user = dummyUserData;
+  const user = useSelector((state) => state.user.value);
   const { openUserProfile, signOut } = useClerk();
 
   const handleClick = (e) => {

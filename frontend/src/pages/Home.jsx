@@ -7,15 +7,32 @@ import RecentMessages from "../components/RecentMessages";
 import { MessageCircleHeart } from "lucide-react";
 import { Link } from "react-router-dom";
 import CreatePost from "../components/CreatePost";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
+  const { getToken } = useAuth();
 
   const fetchFeeds = async () => {
-    setFeeds(dummyPostsData);
+    try {
+      setLoading(true);
+      const { data } = await api.get("/api/post/feed", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      if (data.success) {
+        setFeeds(data.posts);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+
     setLoading(false);
   };
 

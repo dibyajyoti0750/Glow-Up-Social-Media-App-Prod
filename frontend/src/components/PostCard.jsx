@@ -10,6 +10,7 @@ import {
   Smile,
 } from "lucide-react";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 export default function PostCard({ post }) {
   const contentWithHashtags = post.content.replace(
@@ -18,7 +19,7 @@ export default function PostCard({ post }) {
   );
 
   const [likes, setLikes] = useState(post.likes_count);
-  const currUser = dummyUserData;
+  const currUser = useSelector((state) => state.user.value);
 
   const handleLike = async () => {};
 
@@ -34,7 +35,7 @@ export default function PostCard({ post }) {
         <img
           src={post.user.profile_picture}
           alt="profile picture"
-          className="w-10 h-10 rounded-full shadow"
+          className="w-10 h-10 rounded-full object-cover shadow"
         />
 
         <div>

@@ -2,21 +2,57 @@ import { useState } from "react";
 import { dummyUserData } from "../assets/assets";
 import { X, Image, Send } from "lucide-react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios";
 
 export default function CreatePostModal({ setShowModal }) {
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const user = dummyUserData;
+  const user = useSelector((state) => state.user.value);
+
+  const { getToken } = useAuth();
 
   const handleSubmit = async () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
+    const token = await getToken();
+    if (!images.length && !content) {
+      return toast.error("Please add at least one image or text");
+    }
+
+    setLoading(true);
+
+    const postType =
+      images.length && content
+        ? "text_with_image"
+        : images.length
+        ? "image"
+        : "text";
+
+    try {
+      const formData = new FormData();
+      formData.append("content", content);
+      formData.append("post_type", postType);
+
+      images.forEach((image) => formData.append("images", image));
+
+      const { data } = await api.post("/api/post/add", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (data.success) {
         setShowModal(false);
-      }, 5000);
-    });
+      } else {
+        console.log(data.message);
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+      throw new Error(err.message);
+    }
+
+    setLoading(false);
   };
 
   return (

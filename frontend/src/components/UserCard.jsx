@@ -1,9 +1,10 @@
 import { Verified, Plus } from "lucide-react";
 import { dummyUserData } from "../assets/assets";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function UserCard({ user }) {
-  const currentUser = dummyUserData;
+  const currentUser = useSelector((state) => state.user.value);
 
   const handleFollow = async () => {};
 

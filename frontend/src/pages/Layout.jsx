@@ -4,9 +4,11 @@ import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Loading from "../components/Loading";
+import { useSelector } from "react-redux";
 
 export default function Layout() {
-  const userData = dummyUserData;
+  const userData = useSelector((state) => state.user.value);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return userData ? (

@@ -6,8 +6,15 @@ import PostCard from "../components/PostCard";
 import UserProfileInfo from "../components/UserProfileInfo";
 import { Bookmark, Grid3X3, Heart, Image, MessageCircle } from "lucide-react";
 import ProfileModal from "../components/ProfileModal";
+import { useSelector } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import api from "../api/axios";
 
 export default function Profile() {
+  const currentUser = useSelector((state) => state.user.value);
+  const { getToken } = useAuth();
+
   const { profileId } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -20,14 +27,38 @@ export default function Profile() {
     saved: <Bookmark />,
   };
 
-  const fetchUser = async () => {
-    setUser(dummyUserData);
-    setPosts(dummyPostsData);
+  const fetchUser = async (profileId) => {
+    const token = await getToken();
+
+    try {
+      const { data } = await api.post(
+        `/api/user/profiles`,
+        { profileId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (data.success) {
+        setUser(data.profile);
+        setPosts(data.posts);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    if (profileId) {
+      fetchUser(profileId);
+    } else {
+      fetchUser(currentUser._id);
+    }
+  }, [profileId, currentUser]);
+
+  // TODO: Fix the order of posts
 
   return user ? (
     <div className="relative h-full overflow-y-scroll bg-white p-6">

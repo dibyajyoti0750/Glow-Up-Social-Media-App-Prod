@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { dummyUserData } from "../assets/assets";
 import { Pencil } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import { updateUser } from "../features/user/userSlice";
+import toast from "react-hot-toast";
 
 export default function ProfileModal({ setShowEdit }) {
-  const user = dummyUserData;
+  const dispatch = useDispatch();
+  const { getToken } = useAuth();
+  const user = useSelector((state) => state.user.value);
   const [editForm, setEditForm] = useState({
     username: user.username,
     full_name: user.full_name,
@@ -15,13 +21,44 @@ export default function ProfileModal({ setShowEdit }) {
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
+
+    try {
+      const userData = new FormData();
+
+      const {
+        full_name,
+        username,
+        bio,
+        location,
+        profile_picture,
+        cover_photo,
+      } = editForm;
+
+      userData.append("username", username);
+      userData.append("full_name", full_name);
+      userData.append("bio", bio);
+      userData.append("location", location);
+      if (profile_picture) userData.append("profile", profile_picture);
+      if (cover_photo) userData.append("cover", cover_photo);
+
+      const token = await getToken();
+      await dispatch(updateUser({ userData, token })).unwrap(); // .unwrap() extracts the actual payload and throws if the thunk was rejected
+      setShowEdit(false);
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70 text-white backdrop-blur-sm">
       {/* Modal box */}
-      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg text-gray-900 h-[90vh] flex flex-col">
-        {/* Header (sticky) */}
+      <form
+        onSubmit={(e) =>
+          toast.promise(handleSaveProfile(e), { loading: "Saving..." })
+        }
+        className="w-full max-w-2xl bg-white rounded-lg shadow-lg text-gray-900 h-[90vh] flex flex-col"
+      >
+        {/* Header */}
         <div className="p-4 border-b border-gray-200">
           <h1 className="text-xl font-bold text-gray-900">Edit Profile</h1>
         </div>
@@ -44,15 +81,20 @@ export default function ProfileModal({ setShowEdit }) {
               id="cover_photo"
             />
             <div className="group/cover relative">
-              <img
-                src={
-                  editForm.cover_photo
-                    ? URL.createObjectURL(editForm.cover_photo)
-                    : user.cover_photo
-                }
-                alt="cover photo"
-                className="w-full h-32 sm:h-40 rounded-lg object-cover"
-              />
+              {editForm.cover_photo || user.cover_photo ? (
+                <img
+                  src={
+                    editForm.cover_photo
+                      ? URL.createObjectURL(editForm.cover_photo)
+                      : user.cover_photo || null
+                  }
+                  alt="cover photo"
+                  className="w-full h-32 sm:h-40 rounded-xl object-cover"
+                />
+              ) : (
+                <div className="w-full h-32 sm:h-40 rounded-xl bg-linear-to-r from-blue-200 via-blue-400 to-blue-600"></div>
+              )}
+
               <label
                 htmlFor="cover_photo"
                 className="absolute flex justify-center items-center h-8 w-8 top-2 right-2 bg-black/30 rounded-full cursor-pointer"
@@ -156,9 +198,10 @@ export default function ProfileModal({ setShowEdit }) {
           </div>
         </div>
 
-        {/* Footer (sticky) */}
+        {/* Footer */}
         <div className="p-4 border-t border-gray-200 flex justify-end gap-3">
           <button
+            type="button"
             onClick={() => setShowEdit(false)}
             className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium 
             hover:bg-gray-100 active:scale-95 transition-all duration-200 
@@ -176,7 +219,7 @@ export default function ProfileModal({ setShowEdit }) {
             Save Changes
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
