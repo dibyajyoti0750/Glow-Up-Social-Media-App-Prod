@@ -11,6 +11,9 @@ import {
 } from "lucide-react";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 export default function PostCard({ post }) {
   const contentWithHashtags = post.content.replace(
@@ -21,7 +24,32 @@ export default function PostCard({ post }) {
   const [likes, setLikes] = useState(post.likes_count);
   const currUser = useSelector((state) => state.user.value);
 
-  const handleLike = async () => {};
+  const { getToken } = useAuth();
+
+  const handleLike = async () => {
+    try {
+      const { data } = await api.post(
+        "/api/post/like",
+        { postId: post._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setLikes((prev) => {
+          if (prev.includes(currUser._id)) {
+            return prev.filter((id) => id !== currUser._id);
+          } else {
+            return [...prev, currUser._id];
+          }
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -83,9 +111,9 @@ export default function PostCard({ post }) {
           <div className="flex gap-4">
             <Heart
               onClick={handleLike}
-              className={`w-5 h-5 cursor-pointer ${likes.includes(
-                currUser._id && "text-red-500 fill-red-500"
-              )}`}
+              className={`w-5 h-5 cursor-pointer ${
+                likes.includes(currUser._id) ? "text-red-500 fill-red-500" : ""
+              }`}
             />
             <MessageCircle className="w-5 h-5 scale-x-[-1] cursor-pointer" />
             <Send className="w-5 h-5 cursor-pointer" />
@@ -95,7 +123,17 @@ export default function PostCard({ post }) {
         </div>
 
         <div className="flex flex-col gap-1 text-sm px-1">
-          <div className="font-semibold">{likes.length} likes</div>
+          <div>
+            {!likes.length ? (
+              <>
+                Be the first to <span className="font-semibold">like this</span>
+              </>
+            ) : likes.length === 1 ? (
+              "1 like"
+            ) : (
+              `${likes.length} likes`
+            )}
+          </div>
           <div className="text-gray-500 cursor-pointer">
             View all 40 comments
           </div>

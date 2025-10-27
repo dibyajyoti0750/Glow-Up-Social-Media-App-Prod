@@ -46,7 +46,7 @@ export const getStories = wrapAsync(async (req, res) => {
   const user = await User.findById(userId);
 
   // user connections & followings
-  const userIds = [userId, ...user.connections, user.following];
+  const userIds = [userId, ...user.connections, ...user.following];
 
   const stories = await Story.find({
     user: { $in: userIds },

@@ -1,6 +1,8 @@
+import { useAuth } from "@clerk/clerk-react";
 import { Check, Pencil, Sparkle, Upload, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import api from "../api/axios";
 
 export default function StoryModal({ setShowModal, fetchStories }) {
   const bgColors = [
@@ -40,22 +42,83 @@ export default function StoryModal({ setShowModal, fetchStories }) {
   const [media, setMedia] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
+  const { getToken } = useAuth();
+  const MAX_VIDEO_DURATION_SEC = 60;
+  const MAX_VIDEO_SIZE_MB = 50;
+
   const handleMediaUpload = (e) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      setMedia(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      if (file.type.startsWith("video")) {
+        if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
+          toast.error(`Max video size ${MAX_VIDEO_SIZE_MB} MB.`);
+          setMedia(null);
+          setPreviewUrl(null);
+          return;
+        }
+
+        const video = document.createElement("video");
+        video.preload = "metadata";
+        video.onloadedmetadata = () => {
+          window.URL.revokeObjectURL(video.src);
+          if (video.duration > MAX_VIDEO_DURATION_SEC) {
+            toast.error(`Max video duration 1 minute.`);
+            setMedia(null);
+            setPreviewUrl(null);
+          } else {
+            setMedia(file);
+            setPreviewUrl(URL.createObjectURL(file));
+            setText("");
+            setMode("media");
+          }
+        };
+
+        video.src = URL.createObjectURL(file);
+      } else if (file.type.startsWith("image")) {
+        setMedia(file);
+        setPreviewUrl(URL.createObjectURL(file));
+        setText("");
+        setMedia("media");
+      }
     }
   };
 
   const handleAddStory = async () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
+    const media_type =
+      mode === "media"
+        ? media?.type.startsWith("image")
+          ? "image"
+          : "video"
+        : "text";
+
+    if (media_type === "text" && !text) {
+      throw new Error("Please add some text");
+    }
+
+    let formData = new FormData();
+
+    formData.append("content", text);
+    formData.append("media_type", media_type);
+    formData.append("media", media);
+    formData.append("background_color", background);
+
+    const token = await getToken();
+
+    try {
+      const { data } = await api.post("/api/story/create", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (data.success) {
         setShowModal(false);
-      }, 5000);
-    });
+        fetchStories();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (
@@ -156,7 +219,7 @@ export default function StoryModal({ setShowModal, fetchStories }) {
           onClick={() =>
             toast.promise(handleAddStory(), {
               loading: "Saving...",
-              success: () => <p>Story added</p>,
+              success: () => <p>Story added successfully</p>,
               error: (e) => <p>{e.message}</p>,
             })
           }

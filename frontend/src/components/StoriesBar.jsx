@@ -3,8 +3,12 @@ import { dummyStoriesData } from "../assets/assets";
 import { ChevronRight, CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
 import StoryViewer from "./StoryViewer";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 export default function StoriesBar() {
+  const { getToken } = useAuth();
   const [stories, setStories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [viewStory, setViewStory] = useState(null);
@@ -13,7 +17,20 @@ export default function StoriesBar() {
   const [showScrollArrow, setShowScrollArrow] = useState(false);
 
   const fetchStories = async () => {
-    setStories(dummyStoriesData);
+    try {
+      const token = await getToken();
+      const { data } = await api.get("/api/story/get", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (data.success) {
+        setStories(data.stories);
+      } else {
+        toast(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   useEffect(() => {
