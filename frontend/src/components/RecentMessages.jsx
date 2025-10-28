@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { dummyRecentMessagesData } from "../assets/assets";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 export default function RecentMessages() {
   const [messages, setMessages] = useState([]);
+  const { user } = useUser();
+  const { getToken } = useAuth();
 
-  const fetchMessages = async () => {
-    setMessages(dummyRecentMessagesData);
-  };
+  const fetchMessages = async () => {};
 
   useEffect(() => {
     fetchMessages();
@@ -29,7 +30,7 @@ export default function RecentMessages() {
             <img
               src={message.from_user_id.profile_picture}
               alt="sent by"
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 rounded-full object-cover"
             />
 
             <div className="w-full">

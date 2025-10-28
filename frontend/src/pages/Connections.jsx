@@ -140,7 +140,7 @@ export default function Connections() {
                     <img
                       src={user.profile_picture}
                       alt="profile picture"
-                      className="rounded-full w-12 h-12 shadow-sm"
+                      className="rounded-full w-12 h-12 shadow-sm object-cover"
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-1">

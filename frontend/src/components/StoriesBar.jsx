@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { dummyStoriesData } from "../assets/assets";
 import { ChevronRight, CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
 import StoryViewer from "./StoryViewer";

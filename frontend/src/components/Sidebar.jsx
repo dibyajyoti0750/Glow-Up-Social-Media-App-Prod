@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { assets, dummyUserData } from "../assets/assets";
+import { assets } from "../assets/assets";
 import { useClerk, UserButton } from "@clerk/clerk-react";
 import MenuItems from "./MenuItems";
 import { Ellipsis, LogOut, Settings } from "lucide-react";

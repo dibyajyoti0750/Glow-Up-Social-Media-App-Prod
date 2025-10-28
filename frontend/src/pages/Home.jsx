@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { assets, dummyPostsData } from "../assets/assets";
+import { assets } from "../assets/assets";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StoriesBar from "../components/StoriesBar";
 import PostCard from "../components/PostCard";

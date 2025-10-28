@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { dummyUserData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import {
   Verified,

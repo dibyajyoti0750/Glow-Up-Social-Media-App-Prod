@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { dummyUserData } from "../assets/assets";
 import { X, Image, Send } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
