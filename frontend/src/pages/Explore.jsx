@@ -1,21 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dummyConnectionsData } from "../assets/assets";
 import { Loader, Search } from "lucide-react";
 import UserCard from "../components/UserCard";
+import { useDispatch } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
+import { fetchUser } from "../features/user/userSlice";
 
 export default function Explore() {
+  const dispatch = useDispatch();
   const [input, setInput] = useState("");
-  const [users, setUsers] = useState(dummyConnectionsData);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
 
-  const handleSearch = async () => {
-    setUsers([]);
-    setLoading(true);
-    setTimeout(() => {
-      setUsers(dummyConnectionsData);
+  const handleSearch = async (e) => {
+    if (e.key === "Enter") {
+      try {
+        setUsers([]);
+        setLoading(true);
+        const { data } = await api.post(
+          "/api/user/discover",
+          { input },
+          { headers: { Authorization: `Bearer ${await getToken()}` } }
+        );
+
+        data.success ? setUsers(data.users) : toast.error(data.message);
+        setInput("");
+      } catch (err) {
+        toast.error(err.message);
+      }
+
       setLoading(false);
-    }, 200);
+    }
   };
+
+  useEffect(() => {
+    getToken().then((token) => {
+      dispatch(fetchUser(token));
+    });
+  }, [dispatch, getToken]);
 
   return (
     <div className="min-h-screen bg-white">

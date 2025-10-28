@@ -140,7 +140,10 @@ export const followUser = wrapAsync(async (req, res) => {
   toUser.followers.push(userId);
   await toUser.save();
 
-  return res.json({ success: true, message: "You're now following this user" });
+  return res.json({
+    success: true,
+    message: `You're now following ${toUser.full_name}`,
+  });
 });
 
 // Unfollow user

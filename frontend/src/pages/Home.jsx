@@ -10,11 +10,15 @@ import CreatePost from "../components/CreatePost";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useUser();
+  const {
+    value: { profile_picture },
+  } = useSelector((state) => state.user);
+
   const { getToken } = useAuth();
 
   const fetchFeeds = async () => {
@@ -49,7 +53,7 @@ export default function Home() {
       <div>
         <StoriesBar />
 
-        <CreatePost profile_picture={user.imageUrl} />
+        <CreatePost profile_picture={profile_picture} />
 
         <div>
           {feeds.map((post) => (

@@ -1,25 +1,75 @@
 import { Verified, Plus } from "lucide-react";
 import { dummyUserData } from "../assets/assets";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../api/axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { fetchUser } from "../features/user/userSlice";
 
 export default function UserCard({ user }) {
   const currentUser = useSelector((state) => state.user.value);
 
-  const handleFollow = async () => {};
+  const { getToken } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleConnectionRequest = async () => {};
+  const handleFollow = async () => {
+    try {
+      const { data } = await api.post(
+        "/api/user/follow",
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        dispatch(fetchUser(await getToken()));
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleConnectionRequest = async () => {
+    if (currentUser.connections.includes(user._id)) {
+      return navigate(`/inbox/${user._id}`);
+    }
+
+    try {
+      const { data } = await api.post(
+        "/api/user/connect",
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.success);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   return (
     <div className="w-full sm:w-[280px] bg-white rounded-xl shadow-sm">
       {/* Cover + Profile */}
       <div className="relative">
-        <img
-          loading="lazy"
-          src={user.cover_photo}
-          alt="cover"
-          className="w-full h-24 object-cover rounded-t-xl"
-        />
+        {user.cover_photo ? (
+          <img
+            loading="lazy"
+            src={user.cover_photo}
+            alt="cover"
+            className="w-full h-24 object-cover rounded-t-xl"
+          />
+        ) : (
+          <div className="w-full h-24 rounded-t-xl bg-linear-to-r from-blue-200 via-blue-400 to-blue-600"></div>
+        )}
+
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
           <Link to={`/profile/${user._id}`}>
             <img
@@ -45,7 +95,7 @@ export default function UserCard({ user }) {
         {/* Stats */}
         <div className="flex justify-center gap-6 mt-4 text-xs">
           <div>
-            <p className="font-semibold">{user.posts.length}</p>
+            <p className="font-semibold">!</p>
             <p className="text-gray-500">Posts</p>
           </div>
           <div>
