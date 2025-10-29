@@ -62,7 +62,7 @@ export default function PostCard({ post }) {
         <img
           src={post.user.profile_picture}
           alt="profile picture"
-          className="w-10 h-10 rounded-full object-cover shadow"
+          className="w-10 h-10 rounded-full object-cover shadow hover:opacity-90"
         />
 
         <div>

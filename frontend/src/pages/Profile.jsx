@@ -3,7 +3,14 @@ import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import PostCard from "../components/PostCard";
 import UserProfileInfo from "../components/UserProfileInfo";
-import { Bookmark, Grid3X3, Heart, Image, MessageCircle } from "lucide-react";
+import {
+  Bookmark,
+  Camera,
+  Grid3X3,
+  Heart,
+  Image,
+  MessageCircle,
+} from "lucide-react";
 import ProfileModal from "../components/ProfileModal";
 import { useSelector } from "react-redux";
 import { useAuth } from "@clerk/clerk-react";
@@ -57,8 +64,6 @@ export default function Profile() {
     }
   }, [profileId, currentUser]);
 
-  // TODO: Fix the order of posts
-
   return user ? (
     <div className="relative h-full overflow-y-scroll bg-white p-6">
       <div className="max-w-4xl mx-auto">
@@ -103,45 +108,56 @@ export default function Profile() {
           </div>
 
           {/* Posts */}
-          {activeTab === "posts" && (
-            <div className="flex flex-col items-center">
-              {posts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
+          {!posts.length ? (
+            <div className="flex flex-col gap-5 justify-center items-center p-8 sm:p-12 md:p-16 text-gray-300">
+              <div className="h-32 w-32 flex justify-center items-center rounded-full border-2">
+                <Camera className="h-16 w-16" />
+              </div>
+              <p className="text-xl font-semibold text-center">No posts yet</p>
             </div>
-          )}
+          ) : (
+            <div>
+              {activeTab === "posts" && (
+                <div className="flex flex-col items-center">
+                  {posts.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))}
+                </div>
+              )}
 
-          {/* Media */}
-          {activeTab === "media" && (
-            <div className="grid grid-cols-3 w-full">
-              {posts
-                .filter((post) => post.image_urls.length > 0)
-                .map((post) =>
-                  post.image_urls.map((image, idx) => (
-                    <div
-                      key={idx}
-                      className="relative group block cursor-pointer"
-                    >
-                      <img
-                        src={image}
-                        alt="post"
-                        width={400}
-                        height={300}
-                        className="w-full aspect-square object-cover"
-                      />
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 flex justify-center items-center gap-4 text-white font-medium bg-black/60 opacity-0 group-hover:opacity-100 transition duration-200">
-                        <div className="flex gap-1 items-center">
-                          <Heart className="w-5 h-5" />{" "}
-                          {post.likes_count.length}
+              {/* Media */}
+              {activeTab === "media" && (
+                <div className="grid grid-cols-3 w-full">
+                  {posts
+                    .filter((post) => post.image_urls.length > 0)
+                    .map((post) =>
+                      post.image_urls.map((image, idx) => (
+                        <div
+                          key={idx}
+                          className="relative group block cursor-pointer"
+                        >
+                          <img
+                            src={image}
+                            alt="post"
+                            width={400}
+                            height={300}
+                            className="w-full aspect-square object-cover"
+                          />
+                          {/* Hover overlay */}
+                          <div className="absolute inset-0 flex justify-center items-center gap-4 text-white font-medium bg-black/60 opacity-0 group-hover:opacity-100 transition duration-200">
+                            <div className="flex gap-1 items-center">
+                              <Heart className="w-5 h-5" />{" "}
+                              {post.likes_count.length}
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              <MessageCircle className="w-5 h-5" /> 10
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex gap-1 items-center">
-                          <MessageCircle className="w-5 h-5" /> 10
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
+                      ))
+                    )}
+                </div>
+              )}
             </div>
           )}
         </div>

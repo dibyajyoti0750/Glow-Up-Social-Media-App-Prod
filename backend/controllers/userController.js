@@ -283,7 +283,9 @@ export const getUserProfiles = wrapAsync(async (req, res) => {
     return res.json({ success: false, message: "Profile not found" });
   }
 
-  const posts = await Post.find({ user: profileId }).populate("user");
+  const posts = await Post.find({ user: profileId })
+    .populate("user")
+    .sort("-createdAt");
 
   return res.json({ success: true, profile, posts });
 });

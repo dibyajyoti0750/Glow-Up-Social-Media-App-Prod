@@ -16,7 +16,7 @@ export default function CreatePost({ profile_picture }) {
               profile_picture || "https://www.gravatar.com/avatar/?d=mp&s=80"
             }
             alt="profile picture"
-            className="w-10 h-10 rounded-full object-cover hover:opacity-90"
+            className="w-10 h-10 rounded-full object-cover"
           />
         </Link>
 

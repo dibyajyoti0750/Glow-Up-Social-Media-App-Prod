@@ -4,7 +4,7 @@ import {
   UserRoundPlus,
   UserRoundCheck,
   UserRoundPen,
-  MessageCircle,
+  MessageCircleHeart,
   Verified,
 } from "lucide-react";
 
@@ -193,7 +193,7 @@ export default function Connections() {
                             onClick={() => navigate(`/inbox/${user._id}`)}
                             className="w-full px-3 py-2 bg-gray-100 text-black text-sm rounded-lg hover:bg-gray-200 active:scale-95 cursor-pointer transition flex items-center justify-center gap-1"
                           >
-                            <MessageCircle className="w-4 h-4" />
+                            <MessageCircleHeart className="w-4 h-4" />
                             Message
                           </button>
                         )}

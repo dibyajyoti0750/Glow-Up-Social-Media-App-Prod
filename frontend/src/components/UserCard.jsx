@@ -55,90 +55,62 @@ export default function UserCard({ user }) {
   };
 
   return (
-    <div className="w-full sm:w-[280px] bg-white rounded-xl shadow-sm">
-      {/* Cover + Profile */}
-      <div className="relative">
-        {user.cover_photo ? (
-          <img
-            loading="lazy"
-            src={user.cover_photo}
-            alt="cover"
-            className="w-full h-24 object-cover rounded-t-xl"
-          />
-        ) : (
-          <div className="w-full h-24 rounded-t-xl bg-linear-to-r from-blue-200 via-blue-400 to-blue-600"></div>
-        )}
+    <div className="w-full bg-white rounded-xl shadow-sm transition p-4 flex items-center gap-4">
+      {/* Profile Picture */}
+      <Link to={`/profile/${user._id}`} className="flex-shrink-0">
+        <img
+          src={user.profile_picture}
+          alt={user.full_name}
+          className="w-14 h-14 rounded-full object-cover border border-gray-200"
+        />
+      </Link>
 
-        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-          <Link to={`/profile/${user._id}`}>
-            <img
-              src={user.profile_picture}
-              alt={user.full_name}
-              className="w-16 h-16 rounded-full border-4 border-white object-cover shadow"
-            />
+      {/* Info Section */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1">
+          <Link
+            to={`/profile/${user._id}`}
+            className="text-sm font-semibold text-gray-900 truncate hover:underline"
+          >
+            {user.full_name}
           </Link>
+          {user.is_verified && <Verified className="w-4 h-4 text-blue-500" />}
         </div>
+        <p className="text-xs text-gray-500 truncate">@{user.username}</p>
+        <p className="mt-1 text-xs text-gray-600 line-clamp-2">{user.bio}</p>
       </div>
 
-      {/* Info */}
-      <div className="pt-10 px-4 pb-4 text-center">
-        <h2 className="text-base font-semibold text-gray-900 flex items-center justify-center gap-1">
-          {user.full_name}
-          {user.is_verified && <Verified className="w-4 h-4 text-blue-500" />}
-        </h2>
-        <p className="text-xs text-gray-500">@{user.username}</p>
+      {/* Actions */}
+      <div className="flex items-end gap-2">
+        {/* Follow Button */}
+        <button
+          onClick={handleFollow}
+          className={`px-3 py-2 text-xs font-medium rounded-lg active:scale-95 transition
+        ${
+          currentUser?.following.includes(user._id)
+            ? "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            : "bg-blue-500 text-white hover:bg-blue-600"
+        }`}
+        >
+          {currentUser?.following.includes(user._id) ? "Following" : "Follow"}
+        </button>
 
-        {/* Bio trimmed */}
-        <p className="mt-2 text-sm text-gray-600 line-clamp-2">{user.bio}</p>
-
-        {/* Stats */}
-        <div className="flex justify-center gap-6 mt-4 text-xs">
-          <div>
-            <p className="font-semibold">!</p>
-            <p className="text-gray-500">Posts</p>
-          </div>
-          <div>
-            <p className="font-semibold">{user.followers.length}</p>
-            <p className="text-gray-500">Followers</p>
-          </div>
-          <div>
-            <p className="font-semibold">{user.following.length}</p>
-            <p className="text-gray-500">Following</p>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex justify-center gap-2 mt-5">
-          {/* Follow / Following */}
-          <button
-            onClick={handleFollow}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg active:scale-95 cursor-pointer transition
-      ${
-        currentUser?.following.includes(user._id)
-          ? "bg-gray-100 text-gray-800 hover:bg-gray-200" // Following style
-          : "bg-blue-500 text-white hover:bg-blue-600" // Follow style
-      }`}
-          >
-            {currentUser?.following.includes(user._id) ? "Following" : "Follow"}
-          </button>
-
-          {/* Connection / Message */}
-          <button
-            onClick={handleConnectionRequest}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg active:scale-95 cursor-pointer transition
-      ${
-        currentUser?.connections.includes(user._id)
-          ? "bg-blue-500 text-white hover:bg-blue-600" // Message style
-          : "bg-gray-100 text-gray-800 hover:bg-gray-200" // Request style
-      }`}
-          >
-            {currentUser?.connections.includes(user._id) ? (
-              <span>Message</span>
-            ) : (
-              <Plus className="w-4 h-4" />
-            )}
-          </button>
-        </div>
+        {/* Connection / Message */}
+        <button
+          onClick={handleConnectionRequest}
+          className={`px-3 py-2 text-xs font-medium rounded-lg active:scale-95 transition
+        ${
+          currentUser?.connections.includes(user._id)
+            ? "bg-blue-500 text-white hover:bg-blue-600"
+            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+        }`}
+        >
+          {currentUser?.connections.includes(user._id) ? (
+            <span>Message</span>
+          ) : (
+            <Plus className="w-4 h-4" />
+          )}
+        </button>
       </div>
     </div>
   );

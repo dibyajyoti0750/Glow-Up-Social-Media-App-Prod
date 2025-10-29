@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { Pencil } from "lucide-react";
+import { Camera, Pencil } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { updateUser } from "../features/user/userSlice";
 import toast from "react-hot-toast";
 
 export default function ProfileModal({ setShowEdit }) {
   const dispatch = useDispatch();
   const { getToken } = useAuth();
-  const user = useSelector((state) => state.user.value);
+  const { user } = useUser();
+
+  const currUser = useSelector((state) => state.user.value);
   const [editForm, setEditForm] = useState({
-    username: user.username,
-    full_name: user.full_name,
-    bio: user.bio,
-    location: user.location,
+    username: currUser.username,
+    full_name: currUser.full_name,
+    bio: currUser.bio,
+    location: currUser.location,
     profile_picture: null,
     cover_photo: null,
   });
@@ -41,7 +43,22 @@ export default function ProfileModal({ setShowEdit }) {
       if (cover_photo) userData.append("cover", cover_photo);
 
       const token = await getToken();
-      await dispatch(updateUser({ userData, token })).unwrap(); // .unwrap() extracts the actual payload and throws if the thunk was rejected
+
+      try {
+        const updatedUser = await dispatch(
+          updateUser({ userData, token })
+        ).unwrap(); // .unwrap() extracts the actual payload and throws if the thunk was rejected
+
+        if (updatedUser?.profile_picture) {
+          const response = await fetch(updatedUser.profile_picture);
+          const blob = await response.blob();
+
+          await user.setProfileImage({ file: blob });
+        }
+      } catch (err) {
+        console.log("Error updating clerk image", err);
+      }
+
       setShowEdit(false);
     } catch (err) {
       toast.error(err.message);
@@ -80,12 +97,12 @@ export default function ProfileModal({ setShowEdit }) {
               id="cover_photo"
             />
             <div className="group/cover relative">
-              {editForm.cover_photo || user.cover_photo ? (
+              {editForm.cover_photo || currUser.cover_photo ? (
                 <img
                   src={
                     editForm.cover_photo
                       ? URL.createObjectURL(editForm.cover_photo)
-                      : user.cover_photo || null
+                      : currUser.cover_photo || null
                   }
                   alt="cover photo"
                   className="w-full h-32 sm:h-40 rounded-xl object-cover"
@@ -124,13 +141,13 @@ export default function ProfileModal({ setShowEdit }) {
                   src={
                     editForm.profile_picture
                       ? URL.createObjectURL(editForm.profile_picture)
-                      : user.profile_picture
+                      : currUser.profile_picture
                   }
                   alt="profile picture"
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-white shadow-md"
                 />
                 <div className="absolute hidden group-hover/profile:flex justify-center items-center top-0 left-0 right-0 bottom-0 bg-black/20 rounded-full">
-                  <Pencil className="w-5 h-5 text-white" />
+                  <Camera className="w-5 h-5 text-white" />
                 </div>
               </div>
             </label>

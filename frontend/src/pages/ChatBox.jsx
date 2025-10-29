@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, SendHorizonal, Verified, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import {
   addMessage,
@@ -80,14 +80,21 @@ export default function ChatBox() {
       <div className="flex flex-col h-screen">
         {/* Header */}
         <div className="flex items-center gap-2 p-2 md:px-10 xl:pl-96 bg-gray-50 border-b border-gray-300">
-          <img
-            src={user.profile_picture}
-            alt="User profile picture"
-            className="size-8 rounded-full object-cover"
-          />
+          <Link to={`/profile/${user._id}`}>
+            <img
+              src={user.profile_picture}
+              alt="User profile picture"
+              className="size-8 rounded-full object-cover"
+            />
+          </Link>
           <div>
             <div className="flex items-center gap-1">
-              <p className="font-medium">{user.full_name}</p>
+              <Link
+                to={`/profile/${user._id}`}
+                className="font-medium hover:underline"
+              >
+                {user.full_name}
+              </Link>
               {user.is_verified && (
                 <Verified className="w-4 h-4 text-sky-600" />
               )}
