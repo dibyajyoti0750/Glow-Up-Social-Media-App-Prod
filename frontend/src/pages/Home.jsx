@@ -46,7 +46,7 @@ export default function Home() {
 
   return !loading ? (
     <div
-      className="relative h-full overflow-y-scroll no-scrollbar py-12 xl:pr-5 flex
+      className="relative h-full overflow-y-scroll no-scrollbar py-5 xl:pr-5 flex
       items-start justify-center xl:gap-8"
     >
       {/* Stories and post list */}

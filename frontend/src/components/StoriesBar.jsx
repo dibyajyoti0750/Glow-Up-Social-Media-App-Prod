@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronRight, CopyPlus } from "lucide-react";
+import { ChevronLeft, ChevronRight, CopyPlus } from "lucide-react";
 import StoryModal from "./StoryModal";
 import StoryViewer from "./StoryViewer";
 import { useAuth } from "@clerk/clerk-react";
@@ -17,6 +17,7 @@ export default function StoriesBar() {
 
   const storyContainerRef = useRef(null);
   const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [showScrollLeftArrow, setShowScrollLeftArrow] = useState(false);
 
   const fetchStories = async () => {
     try {
@@ -64,6 +65,9 @@ export default function StoriesBar() {
     const checkScroll = () => {
       // arrow disappears when scrolled to the end
       setShowScrollArrow(el.scrollLeft + el.clientWidth < el.scrollWidth);
+
+      // show left arrow if scrolled past beginning
+      setShowScrollLeftArrow(el.scrollLeft > 0);
     };
 
     checkScroll();
@@ -78,6 +82,22 @@ export default function StoriesBar() {
 
   return (
     <div className="relative w-screen sm:w-[calc(100vw - 240px)] lg:max-w-3xl px-4">
+      {showScrollLeftArrow && (
+        <button
+          onClick={() => {
+            if (storyContainerRef.current) {
+              storyContainerRef.current.scrollBy({
+                left: -200,
+                behavior: "smooth",
+              });
+            }
+          }}
+          className="absolute top-16 left-35 -translate-y-1/2 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition cursor-pointer focus:outline-none"
+        >
+          <ChevronLeft className="w-7 h-7" />
+        </button>
+      )}
+
       {showScrollArrow && (
         <button
           onClick={() => {
@@ -114,7 +134,7 @@ export default function StoriesBar() {
         {/* Stories */}
         <div
           ref={storyContainerRef}
-          className="flex flex-1 gap-4 overflow-auto no-scrollbar"
+          className="flex flex-1 gap-4 overflow-auto no-scrollbar scroll-smooth"
         >
           {stories.map((story, idx) => (
             <div
