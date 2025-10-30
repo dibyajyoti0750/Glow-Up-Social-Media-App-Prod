@@ -56,3 +56,20 @@ export const getStories = wrapAsync(async (req, res) => {
 
   return res.json({ success: true, stories });
 });
+
+export const updateStoryViewCount = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { storyId } = req.body;
+
+  const story = await Story.findById(storyId);
+  if (!story) {
+    return res.json({ success: false, message: "Story not found" });
+  }
+
+  if (!story.views_count.includes(userId)) {
+    story.views_count.push(userId);
+    await story.save();
+  }
+
+  return res.json({ success: true, message: "View updated" });
+});

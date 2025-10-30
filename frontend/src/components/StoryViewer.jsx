@@ -1,4 +1,4 @@
-import { Verified, X } from "lucide-react";
+import { Eye, Verified, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
@@ -122,6 +122,11 @@ export default function StoryViewer({ viewStory, setViewStory }) {
       {/* Content wrapper */}
       <div className="max-w-[100vw] max-h-[90vh] flex items-center justify-center">
         {renderContent()}
+      </div>
+
+      <div className="absolute bottom-5 left-10 flex gap-2 items-center text-white/80 text-sm px-3 py-1 bg-white/20 rounded-full">
+        <Eye className="h-4 w-4" />
+        <span>{viewStory.views_count?.length ?? 0}</span>
       </div>
     </div>
   );

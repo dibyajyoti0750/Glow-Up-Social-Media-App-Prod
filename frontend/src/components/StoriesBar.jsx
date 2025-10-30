@@ -5,9 +5,12 @@ import StoryViewer from "./StoryViewer";
 import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 export default function StoriesBar() {
   const { getToken } = useAuth();
+  const currUser = useSelector((state) => state.user.value);
+
   const [stories, setStories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [viewStory, setViewStory] = useState(null);
@@ -26,6 +29,23 @@ export default function StoriesBar() {
         setStories(data.stories);
       } else {
         toast(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const incrementStoryView = async (storyId) => {
+    try {
+      const token = await getToken();
+      const { data } = await api.post(
+        "/api/story/views",
+        { storyId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        fetchStories();
       }
     } catch (err) {
       toast.error(err.message);
@@ -98,15 +118,20 @@ export default function StoriesBar() {
         >
           {stories.map((story, idx) => (
             <div
-              onClick={() => setViewStory(story)}
+              onClick={() => {
+                setViewStory(story);
+                incrementStoryView(story._id);
+              }}
               key={idx}
               className="flex flex-col items-center gap-1 cursor-pointer"
             >
               {/* Story Ring */}
               <div
-                className="p-[3.5px] rounded-full 
-                 [background:conic-gradient(from_180deg,#f58529,#dd2a7b,#8134af,#515bd4,#f58529)] 
-                 transition-all duration-200 active:scale-95"
+                className={`p-1 rounded-full transition-all duration-200 active:scale-95 ${
+                  story.views_count.includes(currUser._id)
+                    ? "bg-gray-200"
+                    : "[background:conic-gradient(from_180deg,#f58529,#dd2a7b,#8134af,#515bd4,#f58529)]"
+                }`}
               >
                 {/* Story inside */}
                 <div className="w-24 h-24 rounded-full overflow-hidden border-3 border-white">
