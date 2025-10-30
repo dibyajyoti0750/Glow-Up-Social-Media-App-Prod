@@ -1,18 +1,22 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Loading from "../components/Loading";
 import { useSelector } from "react-redux";
 
 export default function Layout() {
   const userData = useSelector((state) => state.user.value);
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  const hideSidebar = location.pathname.startsWith("/inbox");
 
   return userData ? (
     <div className="w-full flex h-screen">
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      {!hideSidebar && (
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      )}
 
       <div className="flex-1">
         <Outlet />

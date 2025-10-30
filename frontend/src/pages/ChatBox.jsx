@@ -79,7 +79,7 @@ export default function ChatBox() {
     user && (
       <div className="flex flex-col h-screen">
         {/* Header */}
-        <div className="flex items-center gap-2 p-2 md:px-10 xl:pl-96 bg-gray-50 border-b border-gray-300">
+        <div className="flex items-center gap-2 py-3 px-6 bg-gray-50 border-b border-gray-300">
           <Link to={`/profile/${user._id}`}>
             <img
               src={user.profile_picture}
@@ -146,7 +146,7 @@ export default function ChatBox() {
         </div>
 
         {/* Input area */}
-        <div className="flex flex-col gap-3 w-full max-w-xl md:max-w-2xl mx-auto bg-gray-100/80 rounded-3xl mb-5">
+        <div className="flex flex-col gap-3 w-full max-w-md md:max-w-3xl mx-auto bg-gray-100/80 rounded-3xl mb-5">
           {image && (
             <div className="relative group w-24 h-24 mx-3 mt-4">
               <img
@@ -163,7 +163,7 @@ export default function ChatBox() {
             </div>
           )}
 
-          <div className="flex items-center gap-2 p-3">
+          <div className="flex items-center gap-2 p-2">
             <label htmlFor="image">
               <div className="w-9 h-9 flex items-center justify-center bg-indigo-600 rounded-full p-1.5">
                 <Camera className="text-white cursor-pointer" />

@@ -2,6 +2,7 @@ import logo from "./love.png";
 import sample_cover from "./pexels-suissounet-2101187.jpg";
 import sample_profile from "./profile.png";
 import sponsored_img from "./sponsored.png";
+import send from "./send.png";
 
 import {
   HouseHeart,
@@ -16,6 +17,7 @@ export const assets = {
   sample_cover,
   sample_profile,
   sponsored_img,
+  send,
 };
 
 export const menuItemsData = [

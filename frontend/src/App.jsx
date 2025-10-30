@@ -63,8 +63,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={!user ? <Login /> : <Layout />}>
           <Route index element={<Home />} />
-          <Route path="inbox" element={<Messages />} />
-          <Route path="inbox/:userId" element={<ChatBox />} />
+          <Route path="inbox" element={<Messages />}>
+            <Route path=":userId" element={<ChatBox />} />
+          </Route>
           <Route path="connections" element={<Connections />} />
           <Route path="explore" element={<Explore />} />
           <Route path="profile" element={<Profile />} />
