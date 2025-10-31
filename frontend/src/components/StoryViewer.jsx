@@ -1,9 +1,11 @@
 import { Eye, Verified, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { useUser } from "@clerk/clerk-react";
 
 export default function StoryViewer({ viewStory, setViewStory }) {
   const [progress, setProgress] = useState(0);
+  const { user } = useUser();
 
   useEffect(() => {
     let timer, progressInterval;
@@ -124,10 +126,12 @@ export default function StoryViewer({ viewStory, setViewStory }) {
         {renderContent()}
       </div>
 
-      <div className="absolute bottom-5 left-10 flex gap-2 items-center text-white/80 text-sm px-3 py-1 bg-white/20 rounded-full">
-        <Eye className="h-4 w-4" />
-        <span>{viewStory.views_count?.length ?? 0}</span>
-      </div>
+      {viewStory.user._id === user.id && (
+        <div className="absolute bottom-5 left-10 flex gap-2 items-center text-white/80 text-sm px-3 py-1 bg-white/20 rounded-full">
+          <Eye className="h-4 w-4" />
+          <span>{viewStory.views_count?.length ?? 0}</span>
+        </div>
+      )}
     </div>
   );
 }

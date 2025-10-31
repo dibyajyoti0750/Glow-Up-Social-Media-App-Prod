@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Verified, ChevronLeft, SendHorizonal } from "lucide-react";
+import { Verified, ChevronLeft } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
@@ -19,7 +19,7 @@ export default function Messages() {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  });
+  }, []);
 
   const inChat = location.pathname.startsWith("/inbox/");
   const handleLeftPanel = inChat && isMobile;
@@ -68,9 +68,7 @@ export default function Messages() {
                         <Verified className="w-4 h-4 text-sky-600 shrink-0" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-1">
-                      TODO: Display last message
-                    </p>
+                    <p className="text-sm text-gray-600 line-clamp-1"></p>
                   </div>
                 </div>
               ))}

@@ -6,6 +6,7 @@ import { useAuth } from "@clerk/clerk-react";
 import {
   addMessage,
   fetchMessages,
+  fetchRecentMessages,
   resetMessages,
 } from "../features/messages/messagesSlice";
 import toast from "react-hot-toast";
@@ -51,6 +52,7 @@ export default function ChatBox() {
         setText("");
         setImage(null);
         dispatch(addMessage(data.message));
+        dispatch(fetchRecentMessages(token));
       } else {
         throw new Error(data.message);
       }

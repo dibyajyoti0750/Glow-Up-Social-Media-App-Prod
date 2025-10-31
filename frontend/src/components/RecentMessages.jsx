@@ -1,58 +1,22 @@
-import { useEffect, useState } from "react";
-import { dummyRecentMessagesData } from "../assets/assets";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import api from "../api/axios";
-import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecentMessages } from "../features/messages/messagesSlice";
 
 export default function RecentMessages() {
-  const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
+  const { recentMessages } = useSelector((state) => state.messages);
   const { user } = useUser();
   const { getToken } = useAuth();
 
-  const fetchRecentMessages = async () => {
-    try {
-      const { data } = await api.get("/api/user/recent-messages", {
-        headers: { Authorization: `Bearer ${await getToken()}` },
-      });
-
-      if (data.success) {
-        // group messages by sender & get the latest message for each sender
-        const groupMessages = data.messages.reduce((acc, message) => {
-          const senderId = message.from_user_id._id;
-
-          if (
-            !acc[senderId] ||
-            new Date(message.createdAt) > new Date(acc[senderId].createdAt)
-          ) {
-            acc[senderId] = message;
-          }
-
-          return acc;
-        }, {});
-
-        // sort messages by date
-        const sortedMessages = Object.values(groupMessages).sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        setMessages(sortedMessages);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
   useEffect(() => {
-    if (user) {
-      fetchRecentMessages();
-      setInterval(fetchRecentMessages, 30000);
-      return () => clearInterval();
-    }
-  }, [user]);
+    if (!user) return;
+    getToken().then((token) => {
+      dispatch(fetchRecentMessages(token));
+    });
+  }, [user, getToken, dispatch]);
 
   return (
     <div className="bg-white max-w-xs mt-4 px-2 py-4 min-h-20 rounded shadow text-xs text-slate-800">
@@ -60,7 +24,7 @@ export default function RecentMessages() {
         Recent Messages
       </h3>
       <div className="flex flex-col max-h-56 overflow-y-scroll no-scrollbar">
-        {messages.map((message, idx) => (
+        {recentMessages.map((message, idx) => (
           <Link
             to={`/inbox/${message.from_user_id._id}`}
             key={idx}
