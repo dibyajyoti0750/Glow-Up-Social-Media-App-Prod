@@ -9,7 +9,7 @@ const connections = {};
 // Controller function for the SSE endpoint
 export const sseController = (req, res) => {
   const { userId } = req.params;
-  console.log("New client connected : ", userId);
+  console.log("New client connected:", userId);
 
   // set SSE headers
   res.setHeader("Content-Type", "text/event-stream");
@@ -107,4 +107,30 @@ export const getUserRecentMessages = wrapAsync(async (req, res) => {
     .sort({ createdAt: -1 });
 
   return res.json({ success: true, messages });
+});
+
+export const getLatestMessages = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+
+  const messages = await Message.find({
+    $or: [{ to_user_id: userId }, { from_user_id: userId }],
+  }).sort("-createdAt");
+
+  const latestByUser = messages.reduce((acc, msg) => {
+    const from = msg.from_user_id._id.toString();
+    const to = msg.to_user_id._id.toString();
+
+    const otherUserId = from === userId ? to : from;
+
+    if (!acc[otherUserId]) {
+      acc[otherUserId] = msg;
+    }
+
+    return acc;
+  }, {});
+
+  return res.json({
+    success: true,
+    latestMessages: Object.values(latestByUser),
+  });
 });

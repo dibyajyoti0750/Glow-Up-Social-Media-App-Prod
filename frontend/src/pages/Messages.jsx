@@ -11,10 +11,6 @@ export default function Messages() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const goBack = () => {
-    navigate(-1);
-  };
-
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
@@ -30,7 +26,11 @@ export default function Messages() {
         <div className="w-full md:w-1/5 border-r border-gray-200 overflow-y-auto">
           <div className="p-6">
             <div className="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6">
-              <span onClick={goBack} title="Go back" className="cursor-pointer">
+              <span
+                onClick={() => navigate(-1)}
+                title="Go back"
+                className="cursor-pointer"
+              >
                 <ChevronLeft className="w-7 h-7" />
               </span>
               Messages
@@ -68,7 +68,14 @@ export default function Messages() {
                         <Verified className="w-4 h-4 text-sky-600 shrink-0" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-1"></p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-gray-600 line-clamp-1">
+                        Last message
+                      </p>
+                      <p className="bg-blue-500 text-white w-4 h-4 flex items-center justify-center rounded-full text-[10px]">
+                        1
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}

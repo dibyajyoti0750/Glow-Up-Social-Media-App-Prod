@@ -44,7 +44,7 @@ export default function RecentMessages() {
                 </p>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex items-center justify-between">
                 <p className="text-gray-500">
                   {message.text ? message.text : "Media"}
                 </p>
