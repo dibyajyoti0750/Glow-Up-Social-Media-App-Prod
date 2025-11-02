@@ -117,8 +117,8 @@ export const getLatestMessages = wrapAsync(async (req, res) => {
   }).sort("-createdAt");
 
   const latestByUser = messages.reduce((acc, msg) => {
-    const from = msg.from_user_id._id.toString();
-    const to = msg.to_user_id._id.toString();
+    const from = msg.from_user_id.toString();
+    const to = msg.to_user_id.toString();
 
     const otherUserId = from === userId ? to : from;
 

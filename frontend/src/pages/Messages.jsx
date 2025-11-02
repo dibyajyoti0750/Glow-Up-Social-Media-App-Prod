@@ -3,13 +3,19 @@ import { Verified, ChevronLeft } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
+import api from "../api/axios";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
 
 export default function Messages() {
   const { connections } = useSelector((state) => state.connections);
+  const [latestMessages, setLatestMessages] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 786);
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { getToken } = useAuth();
+  const { user: currUser } = useUser();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -19,6 +25,21 @@ export default function Messages() {
 
   const inChat = location.pathname.startsWith("/inbox/");
   const handleLeftPanel = inChat && isMobile;
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await api.get("/api/message/latest", {
+          headers: { Authorization: `Bearer ${await getToken()}` },
+        });
+        data.success
+          ? setLatestMessages(data.latestMessages)
+          : toast.error(data.message);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    })();
+  }, []);
 
   return (
     <div className="h-screen bg-white flex">
@@ -69,12 +90,47 @@ export default function Messages() {
                       )}
                     </div>
                     <div className="flex items-center justify-between">
+                      {/* Display the last message */}
                       <p className="text-sm text-gray-600 line-clamp-1">
-                        Last message
+                        {(() => {
+                          const latest = latestMessages.find(
+                            (msg) =>
+                              msg.from_user_id === user._id ||
+                              msg.to_user_id === user._id
+                          );
+
+                          if (!latest) return "";
+
+                          const isCurrentUserSender =
+                            latest.from_user_id === currUser.id;
+
+                          return isCurrentUserSender
+                            ? `You: ${latest.text}`
+                            : latest.text;
+                        })()}
                       </p>
-                      <p className="bg-blue-500 text-white w-4 h-4 flex items-center justify-center rounded-full text-[10px]">
-                        1
-                      </p>
+
+                      {/* Display unseen badge */}
+                      {(() => {
+                        const latest = latestMessages.find(
+                          (msg) =>
+                            msg.from_user_id === user._id ||
+                            msg.to_user_id === user._id
+                        );
+
+                        const isUnread =
+                          latest &&
+                          latest.from_user_id === user._id &&
+                          !latest.seen;
+
+                        return (
+                          isUnread && (
+                            <p className="bg-blue-500 text-white w-4 h-4 flex items-center justify-center rounded-full text-[10px]">
+                              1
+                            </p>
+                          )
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
