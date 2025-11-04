@@ -217,7 +217,7 @@ export const sendConnectionRequest = wrapAsync(async (req, res) => {
     });
   }
 
-  return res.json({ success: false, message: "Connection request pending" });
+  return res.json({ success: false, message: "Connection request pending!" });
 });
 
 // Get user connections

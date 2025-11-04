@@ -1,5 +1,11 @@
-import { Calendar, MapPin, PenBox, Verified } from "lucide-react";
+import { Calendar, MapPin, Verified } from "lucide-react";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../api/axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { fetchUser } from "../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfileInfo({
   user,
@@ -7,6 +13,73 @@ export default function UserProfileInfo({
   profileId,
   setShowEdit,
 }) {
+  const currentUser = useSelector((state) => state.user.value);
+  const isFollowing = currentUser.following.includes(user._id);
+  const isConnected = currentUser.connections.includes(user._id);
+  const { getToken } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleFollow = async () => {
+    try {
+      const { data } = await api.post(
+        "/api/user/follow",
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        dispatch(fetchUser(await getToken()));
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleUnfollow = async () => {
+    try {
+      const { data } = await api.post(
+        "/api/user/unfollow",
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        dispatch(fetchUser(await getToken()));
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleConnectionRequest = async () => {
+    if (isConnected) {
+      return navigate(`/inbox/${user._id}`);
+    }
+
+    try {
+      const { data } = await api.post(
+        "/api/user/connect",
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.success);
+      } else {
+        toast(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="relative py-2 px-6 md:px-8 bg-white">
       <div className="flex flex-col md:flex-row items-start gap-6">
@@ -78,6 +151,28 @@ export default function UserProfileInfo({
           </div>
         </div>
       </div>
+
+      {profileId && (
+        <div className="flex justify-between items-center gap-2 mt-8 md:mx-10">
+          <button
+            onClick={isFollowing ? handleUnfollow : handleFollow}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg active:scale-95 transition ${
+              isFollowing
+                ? "bg-gray-100 hover:bg-gray-200 text-black"
+                : "bg-blue-500 hover:bg-blue-600 text-white"
+            }`}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
+
+          <button
+            onClick={handleConnectionRequest}
+            className="flex-1 bg-gray-100 hover:bg-gray-200 py-2 text-sm font-medium rounded-lg active:scale-95 transition"
+          >
+            {isConnected ? "Message" : "Connect"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
