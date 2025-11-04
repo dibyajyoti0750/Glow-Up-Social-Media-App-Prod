@@ -18,22 +18,24 @@ import Notification from "./components/Notification";
 
 export default function App() {
   const { user } = useUser();
-  const { getToken } = useAuth();
+  const { isLoaded, getToken } = useAuth();
   const { pathname } = useLocation();
   const pathnameRef = useRef(pathname);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (user) {
-        const token = await getToken();
-        dispatch(fetchUser(token));
-        dispatch(fetchConnections(token));
-      }
+      if (!isLoaded || !user) return;
+
+      const token = await getToken();
+      if (!token) return;
+
+      dispatch(fetchUser(token));
+      dispatch(fetchConnections(token));
     };
 
     fetchData();
-  }, [user, getToken, dispatch]);
+  }, [isLoaded, user, getToken, dispatch]);
 
   useEffect(() => {
     if (user) {
