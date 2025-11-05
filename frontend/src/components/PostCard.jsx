@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
+import PostModal from "./PostModal";
 
 export default function PostCard({ post }) {
   const contentWithHashtags = post.content.replace(
@@ -21,6 +22,7 @@ export default function PostCard({ post }) {
   );
 
   const [likes, setLikes] = useState(post.likes_count);
+  const [postModal, setPostModal] = useState(false);
   const currUser = useSelector((state) => state.user.value);
 
   const { getToken } = useAuth();
@@ -89,19 +91,24 @@ export default function PostCard({ post }) {
 
       {/* Images */}
       <div className="grid grid-cols-2 gap-2">
-        {post.image_urls.map((img, idx) => (
-          <img
-            loading="lazy"
-            key={idx}
-            src={img}
-            alt="post image"
-            width={400}
-            height={300}
-            className={`w-full h-48 object-cover rounded ${
-              post.image_urls.length === 1 && "col-span-2 h-auto"
-            }`}
-          />
-        ))}
+        {post.image_urls?.length > 0 &&
+          post.image_urls.map((img, idx) => (
+            <img
+              onClick={() => setPostModal(true)}
+              loading="lazy"
+              key={idx}
+              src={img}
+              title="View image"
+              alt="post image"
+              width={400}
+              height={300}
+              className={`w-full object-cover rounded cursor-pointer ${
+                post.image_urls.length === 1
+                  ? "col-span-2 h-auto max-h-[500px]"
+                  : "h-48"
+              }`}
+            />
+          ))}
       </div>
 
       {/* Actions */}
@@ -133,14 +140,30 @@ export default function PostCard({ post }) {
               `${likes.length} likes`
             )}
           </div>
-          <div className="text-gray-500 cursor-pointer">
+
+          <div
+            onClick={() => setPostModal(true)}
+            className="w-fit text-gray-500 cursor-pointer hover:text-gray-700"
+          >
             View all 40 comments
           </div>
-          <div className="flex items-center justify-between text-gray-500 cursor-pointer pb-4 border-b border-neutral-200">
-            Add a comment... <Smile className="w-[15px] h-[15px]" />
+          <div className="flex items-center justify-between text-gray-500 pb-4 border-b border-neutral-200">
+            <span
+              onClick={() => setPostModal(true)}
+              className="hover:text-gray-700 cursor-pointer"
+            >
+              Add a comment...
+            </span>
+
+            <Smile
+              onClick={() => setPostModal(true)}
+              className="w-[15px] h-[15px] hover:text-gray-700 cursor-pointer"
+            />
           </div>
         </div>
       </div>
+
+      {postModal && <PostModal post={post} setPostModal={setPostModal} />}
     </div>
   );
 }

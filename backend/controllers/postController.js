@@ -56,6 +56,7 @@ export const getFeedPosts = wrapAsync(async (req, res) => {
   // user can see their own posts and the posts of users they are connected to or following
   const posts = await Post.find({ user: { $in: userIds } })
     .populate("user")
+    .populate({ path: "comments", populate: { path: "user" } })
     .sort("-createdAt");
 
   res.json({ success: true, posts });
