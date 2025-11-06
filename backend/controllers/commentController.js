@@ -6,7 +6,7 @@ export const addComment = wrapAsync(async (req, res) => {
   const { userId } = req.auth();
   const { text, postId } = req.body;
 
-  if (!text?.trim() || postId) {
+  if (!text?.trim() || !postId) {
     return res.status(400).json({ success: false, message: "Missing fields" });
   }
 
@@ -18,9 +18,11 @@ export const addComment = wrapAsync(async (req, res) => {
 
   await Post.findByIdAndUpdate(postId, { $push: { comments: comment._id } });
 
+  const populatedComment = await comment.populate("user");
+
   return res.status(201).json({
     success: true,
     message: "Comment added successfully",
-    comment,
+    comment: populatedComment,
   });
 });
