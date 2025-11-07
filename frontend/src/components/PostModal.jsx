@@ -10,12 +10,39 @@ import { fetchUser } from "../features/user/userSlice";
 export default function PostModal({ post, setPostModal }) {
   const currentUser = useSelector((state) => state.user.value);
   const [text, setText] = useState("");
+  const [likes, setLikes] = useState(post.likes_count);
   const [comments, setComments] = useState(post.comments);
   const [followModal, setFollowModal] = useState(false);
   const commentsEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   const { getToken } = useAuth();
   const dispatch = useDispatch();
+
+  const handleLike = async () => {
+    try {
+      const { data } = await api.post(
+        "/api/post/like",
+        { postId: post._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setLikes((prev) => {
+          if (prev.includes(currentUser._id)) {
+            return prev.filter((id) => id !== currentUser._id);
+          } else {
+            return [...prev, currentUser._id];
+          }
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const handleFollow = async () => {
     try {
@@ -194,24 +221,38 @@ export default function PostModal({ post, setPostModal }) {
             <div className="flex flex-col gap-2 px-2 py-5 border-t border-gray-200 shrink-0">
               <div className="flex justify-between items-center">
                 <div className="flex gap-4">
-                  <Heart />
-                  <MessageCircle />
+                  <Heart
+                    onClick={handleLike}
+                    className={`cursor-pointer ${
+                      likes.includes(currentUser._id)
+                        ? "text-red-500 fill-red-500"
+                        : ""
+                    }`}
+                  />
+                  <MessageCircle
+                    onClick={() => inputRef.current.focus()}
+                    className="cursor-pointer"
+                  />
                   <Send />
                 </div>
                 <Bookmark />
               </div>
 
               <div className="px-1.5 text-sm">
-                {post.likes_count.length < 1
+                {likes.length < 1
                   ? "Be the first to like this"
-                  : post.likes_count.length}
+                  : likes.length === 1
+                  ? "1 like"
+                  : `${likes.length} likes`}
               </div>
             </div>
 
             {/* Comment input */}
             <div className="p-3 flex items-center gap-3 border-t border-gray-200 shrink-0">
               <input
+                ref={inputRef}
                 onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addComment()}
                 value={text}
                 type="text"
                 placeholder="Add a comment..."
