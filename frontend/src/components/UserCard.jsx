@@ -161,14 +161,14 @@ export default function UserCard({ user }) {
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleUnfollow}
-                className="bg-red-500 text-white font-medium py-2 rounded-lg hover:bg-red-600 transition"
+                className="bg-red-500 text-white font-medium py-2 rounded-lg hover:bg-red-600 transition cursor-pointer"
               >
                 Unfollow
               </button>
 
               <button
                 onClick={() => setFollowModal(false)}
-                className="bg-gray-100 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition"
+                className="bg-gray-100 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition cursor-pointer"
               >
                 Cancel
               </button>
