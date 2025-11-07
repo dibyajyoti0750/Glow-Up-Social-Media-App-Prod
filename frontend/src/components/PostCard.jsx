@@ -14,6 +14,7 @@ import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import PostModal from "./PostModal";
+import ShareModal from "./ShareModal";
 
 export default function PostCard({ post }) {
   const contentWithHashtags = post.content.replace(
@@ -23,7 +24,9 @@ export default function PostCard({ post }) {
 
   const [likes, setLikes] = useState(post.likes_count);
   const [postModal, setPostModal] = useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const currUser = useSelector((state) => state.user.value);
+  const { connections } = useSelector((state) => state.connections);
 
   const { getToken } = useAuth();
 
@@ -117,18 +120,21 @@ export default function PostCard({ post }) {
           <div className="flex gap-4">
             <Heart
               onClick={handleLike}
-              className={`w-5 h-5 cursor-pointer ${
+              className={`cursor-pointer ${
                 likes.includes(currUser._id) ? "text-red-500 fill-red-500" : ""
               }`}
             />
             <MessageCircle
               onClick={() => setPostModal(true)}
-              className="w-5 h-5 scale-x-[-1] cursor-pointer"
+              className="scale-x-[-1] cursor-pointer"
             />
-            <Send className="w-5 h-5 cursor-pointer" />
+            <Send
+              onClick={() => setShareModal(true)}
+              className="cursor-pointer"
+            />
           </div>
 
-          <Bookmark className="w-5 h-5" />
+          <Bookmark />
         </div>
 
         <div className="flex flex-col gap-1 text-sm px-1">
@@ -161,6 +167,9 @@ export default function PostCard({ post }) {
       </div>
 
       {postModal && <PostModal post={post} setPostModal={setPostModal} />}
+      {shareModal && (
+        <ShareModal connections={connections} setShareModal={setShareModal} />
+      )}
     </div>
   );
 }
