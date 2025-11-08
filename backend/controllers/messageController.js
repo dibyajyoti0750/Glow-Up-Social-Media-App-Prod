@@ -79,6 +79,34 @@ export const sendMessage = wrapAsync(async (req, res) => {
   }
 });
 
+export const sharePost = wrapAsync(async (req, res) => {
+  const { userId: from_user_id } = req.auth();
+  const { to_user_id, postId } = req.body;
+
+  // create the message
+  const message = await Message.create({
+    from_user_id,
+    to_user_id,
+    message_type: "post_share",
+    post: postId,
+  });
+
+  // send response back to sender immediately
+  res.json({ success: true, message });
+
+  // populate user data
+  const messageWithUserData = await Message.findById(message._id)
+    .populate("from_user_id")
+    .populate("post", "content image_urls _id");
+
+  // send it in real time to the receiver using sse
+  if (connections[to_user_id]) {
+    connections[to_user_id].write(
+      `data: ${JSON.stringify(messageWithUserData)}\n\n`
+    );
+  }
+});
+
 // Get chat messages
 export const getChatMessages = wrapAsync(async (req, res) => {
   const { userId } = req.auth();
@@ -89,7 +117,9 @@ export const getChatMessages = wrapAsync(async (req, res) => {
       { from_user_id: userId, to_user_id },
       { from_user_id: to_user_id, to_user_id: userId },
     ],
-  }).sort({ createdAt: -1 });
+  })
+    .sort("-createdAt")
+    .populate("post", "image_urls content _id");
 
   // mark messages as seen
   await Message.updateMany(
