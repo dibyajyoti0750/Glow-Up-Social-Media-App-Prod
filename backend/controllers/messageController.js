@@ -119,7 +119,7 @@ export const getChatMessages = wrapAsync(async (req, res) => {
     ],
   })
     .sort("-createdAt")
-    .populate("post", "image_urls content _id");
+    .populate({ path: "post", populate: { path: "user" } });
 
   // mark messages as seen
   await Message.updateMany(

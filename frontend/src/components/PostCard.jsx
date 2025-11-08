@@ -167,8 +167,13 @@ export default function PostCard({ post }) {
       </div>
 
       {postModal && <PostModal post={post} setPostModal={setPostModal} />}
+
       {shareModal && (
-        <ShareModal connections={connections} setShareModal={setShareModal} />
+        <ShareModal
+          connections={connections}
+          post={post}
+          setShareModal={setShareModal}
+        />
       )}
     </div>
   );

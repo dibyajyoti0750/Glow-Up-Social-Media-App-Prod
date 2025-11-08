@@ -1,6 +1,30 @@
 import { X } from "lucide-react";
+import api from "../api/axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
 
-export default function ShareModal({ connections, setShareModal }) {
+export default function ShareModal({ connections, post, setShareModal }) {
+  const { getToken } = useAuth();
+
+  const handleShare = async (to) => {
+    try {
+      const { data } = await api.post(
+        "/api/message/share",
+        { to_user_id: to, postId: post._id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success("You shared this post");
+        setShareModal(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm">
       {/* Modal box */}
@@ -17,7 +41,10 @@ export default function ShareModal({ connections, setShareModal }) {
         {/* Body */}
         <div className="flex items-center gap-4">
           {connections.map((conn, i) => (
-            <div className="flex flex-col gap-1 items-center">
+            <div
+              onClick={() => handleShare(conn._id)}
+              className="flex flex-col gap-1 items-center"
+            >
               <img
                 title={conn.full_name}
                 key={i}

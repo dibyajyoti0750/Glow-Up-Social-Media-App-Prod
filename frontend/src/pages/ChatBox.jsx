@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, SendHorizonal, Verified, X } from "lucide-react";
+import { Camera, Link2, SendHorizonal, Verified, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
@@ -11,6 +11,8 @@ import {
 } from "../features/messages/messagesSlice";
 import toast from "react-hot-toast";
 import api from "../api/axios";
+import moment from "moment";
+import PostModal from "../components/PostModal";
 
 export default function ChatBox() {
   const { messages } = useSelector((state) => state.messages);
@@ -21,6 +23,7 @@ export default function ChatBox() {
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null);
+  const [postModal, setPostModal] = useState(false);
   const messagesEndRef = useRef(null);
 
   const { connections } = useSelector((state) => state.connections);
@@ -107,7 +110,7 @@ export default function ChatBox() {
 
         {/* Messages */}
         <div className="p-5 md:px-10 h-full overflow-y-scroll">
-          <div className="space-y-4 max-w-4xl mx-auto">
+          <div className="space-y-[4px] max-w-4xl mx-auto">
             {messages
               .toSorted((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
               .map((message, idx) => (
@@ -130,14 +133,59 @@ export default function ChatBox() {
 
                     {message.message_type !== "image" && message.text && (
                       <p
-                        className={`p-3 text-sm max-w-sm rounded-2xl bg-gray-100/80 text-slate-700 whitespace-pre-line ${
-                          message.to_user_id !== user._id
-                            ? "rounded-bl-none"
-                            : "rounded-br-none bg-indigo-600 text-white"
+                        className={`p-2 text-sm max-w-sm rounded-xl bg-gray-100/80 text-slate-700 whitespace-pre-line ${
+                          message.to_user_id === user._id &&
+                          "bg-sky-700 text-white"
                         }`}
                       >
-                        {message.text}
+                        <div className="flex items-end gap-2">
+                          <span className="text-base">{message.text}</span>
+
+                          <div className="flex items-center gap-2 text-xs">
+                            <span>{moment(message.createdAt).calendar()}</span>
+                          </div>
+                        </div>
                       </p>
+                    )}
+
+                    {message.message_type === "post_share" && (
+                      <>
+                        <div
+                          onClick={() => setPostModal(true)}
+                          title="View post"
+                          className="rounded-2xl px-1.5 pt-1.5 pb-4 bg-sky-700 cursor-pointer 
+                                   hover:scale-[0.98] hover:shadow-xl hover:bg-sky-600 
+                                   transition-all duration-300 ease-out active:scale-95 
+                                    max-w-sm"
+                        >
+                          <div className="flex flex-col bg-sky-800 rounded-2xl p-1.5 text-sm text-white">
+                            <img
+                              src={message.post.image_urls[0]}
+                              alt="Post image"
+                              className="w-full max-w-sm max-h-[300px] rounded-2xl object-cover"
+                            />
+                            <p className="p-2 font-semibold break-words">
+                              {message.post.content}
+                            </p>
+                            <div className="flex gap-1 px-2">
+                              <Link2 className="h-5 w-5 shrink-0" />
+                              <span className="hover:underline break-all">{`https://glow-up-social-media-app-prod-front.vercel.app/post/${message.post._id}`}</span>
+                            </div>
+                          </div>
+
+                          <div className="text-xs text-white justify-self-end p-1.5">
+                            {moment(message.createdAt).calendar()}
+                          </div>
+                        </div>
+
+                        {/* Gotta fix the error here */}
+                        {postModal && (
+                          <PostModal
+                            post={message.post}
+                            setPostModal={setPostModal}
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
