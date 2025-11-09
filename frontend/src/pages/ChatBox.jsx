@@ -23,7 +23,7 @@ export default function ChatBox() {
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null);
-  const [postModal, setPostModal] = useState(false);
+  const [postModal, setPostModal] = useState(null);
   const messagesEndRef = useRef(null);
 
   const { connections } = useSelector((state) => state.connections);
@@ -132,7 +132,7 @@ export default function ChatBox() {
                     )}
 
                     {message.message_type !== "image" && message.text && (
-                      <p
+                      <div
                         className={`p-2 text-sm max-w-sm rounded-xl bg-gray-100/80 text-slate-700 whitespace-pre-line ${
                           message.to_user_id === user._id &&
                           "bg-sky-700 text-white"
@@ -145,13 +145,13 @@ export default function ChatBox() {
                             <span>{moment(message.createdAt).calendar()}</span>
                           </div>
                         </div>
-                      </p>
+                      </div>
                     )}
 
                     {message.message_type === "post_share" && (
                       <>
                         <div
-                          onClick={() => setPostModal(true)}
+                          onClick={() => setPostModal(message.post)}
                           title="View post"
                           className="rounded-2xl px-1.5 pt-1.5 pb-4 bg-sky-700 cursor-pointer 
                                    hover:scale-[0.98] hover:shadow-xl hover:bg-sky-600 
@@ -159,11 +159,13 @@ export default function ChatBox() {
                                     max-w-sm"
                         >
                           <div className="flex flex-col bg-sky-800 rounded-2xl p-1.5 text-sm text-white">
-                            <img
-                              src={message.post.image_urls[0]}
-                              alt="Post image"
-                              className="w-full max-w-sm max-h-[300px] rounded-2xl object-cover"
-                            />
+                            {message.post.image_urls.length > 0 && (
+                              <img
+                                src={message.post.image_urls[0]}
+                                alt="Post image"
+                                className="w-full max-w-sm max-h-[300px] rounded-2xl object-cover"
+                              />
+                            )}
                             <p className="p-2 font-semibold break-words">
                               {message.post.content}
                             </p>
@@ -178,10 +180,10 @@ export default function ChatBox() {
                           </div>
                         </div>
 
-                        {/* Gotta fix the error here */}
+                        {/* TODO: Gotta fix the error here */}
                         {postModal && (
                           <PostModal
-                            post={message.post}
+                            post={postModal}
                             setPostModal={setPostModal}
                           />
                         )}

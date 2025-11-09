@@ -153,19 +153,24 @@ export default function PostModal({ post, setPostModal }) {
               <div className="flex flex-col">
                 <div className="flex items-center font-semibold text-sm">
                   <span>{post.user.username}</span>
-                  <Dot />
-                  <span className="text-sky-600 hover:text-sky-700 cursor-pointer">
-                    {currentUser.following.includes(post.user._id) ? (
-                      <span
-                        onClick={() => setFollowModal(true)}
-                        className="text-gray-500"
-                      >
-                        Following
+
+                  {currentUser._id !== post.user._id && (
+                    <>
+                      <Dot />
+                      <span className="text-sky-600 hover:text-sky-700 cursor-pointer">
+                        {currentUser.following.includes(post.user._id) ? (
+                          <span
+                            onClick={() => setFollowModal(true)}
+                            className="text-gray-500"
+                          >
+                            Following
+                          </span>
+                        ) : (
+                          <span onClick={handleFollow}>Follow</span>
+                        )}
                       </span>
-                    ) : (
-                      <span onClick={handleFollow}>Follow</span>
-                    )}
-                  </span>
+                    </>
+                  )}
                 </div>
                 <span className="text-xs text-gray-500">
                   {moment(post.createdAt).fromNow()}
