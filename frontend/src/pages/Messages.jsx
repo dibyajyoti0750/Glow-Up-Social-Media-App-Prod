@@ -105,8 +105,8 @@ export default function Messages() {
                             latest.from_user_id === currUser.id;
 
                           return isCurrentUserSender
-                            ? `You: ${latest.text}`
-                            : latest.text;
+                            ? `You: ${latest.text ? latest.text : "Media"}`
+                            : `${latest.text ? latest.text : "Media"}`;
                         })()}
                       </p>
 

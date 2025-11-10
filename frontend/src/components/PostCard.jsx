@@ -93,9 +93,9 @@ export default function PostCard({ post }) {
       )}
 
       {/* Images */}
-      <div className="grid grid-cols-2 gap-2">
-        {post.image_urls?.length > 0 &&
-          post.image_urls.map((img, idx) => (
+      {post.image_urls.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {post.image_urls.map((img, idx) => (
             <img
               onClick={() => setPostModal(true)}
               loading="lazy"
@@ -112,7 +112,8 @@ export default function PostCard({ post }) {
               }`}
             />
           ))}
-      </div>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex flex-col text-gray-800 gap-2">
