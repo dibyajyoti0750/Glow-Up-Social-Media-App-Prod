@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { updateUser } from "../features/user/userSlice";
@@ -147,7 +147,7 @@ export default function ProfileModal({ setShowEdit }) {
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-white shadow-md"
                 />
                 <div className="absolute hidden group-hover/profile:flex justify-center items-center top-0 left-0 right-0 bottom-0 bg-black/20 rounded-full">
-                  <Camera className="w-5 h-5 text-white" />
+                  <Pencil className="w-4 h-4 text-white" />
                 </div>
               </div>
             </label>

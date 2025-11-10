@@ -285,6 +285,7 @@ export const getUserProfiles = wrapAsync(async (req, res) => {
 
   const posts = await Post.find({ user: profileId })
     .populate("user")
+    .populate({ path: "comments", populate: { path: "user" } })
     .sort("-createdAt");
 
   return res.json({ success: true, profile, posts });

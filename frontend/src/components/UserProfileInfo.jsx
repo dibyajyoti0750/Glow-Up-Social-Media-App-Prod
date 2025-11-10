@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Verified } from "lucide-react";
+import { Calendar, Camera, MapPin, Verified } from "lucide-react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../api/axios";
@@ -83,12 +83,22 @@ export default function UserProfileInfo({
   return (
     <div className="relative py-2 px-6 md:px-8 bg-white">
       <div className="flex flex-col md:flex-row items-start gap-6">
-        <div className="h-32 w-32 border-4 border-white shadow-xl absolute -top-16 rounded-full overflow-hidden">
+        <div className="h-32 w-32 border-4 border-white shadow-xl absolute -top-16 rounded-full overflow-hidden cursor-pointer group">
           <img
             src={user.profile_picture}
             alt="profile picture"
             className="w-full h-full object-cover"
           />
+
+          {!profileId && (
+            <div
+              title="Change profile photo"
+              onClick={() => setShowEdit(true)}
+              className="flex items-center justify-center absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/20 transition-opacity duration-300"
+            >
+              <Camera className="text-white" />
+            </div>
+          )}
         </div>
 
         <div className="w-full pt-16 md:pt-0 md:pl-36">
