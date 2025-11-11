@@ -290,3 +290,31 @@ export const getUserProfiles = wrapAsync(async (req, res) => {
 
   return res.json({ success: true, profile, posts });
 });
+
+export const toggleSavePost = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { postId } = req.body;
+
+  const user = await User.findById(userId);
+
+  const isSaved = user.savedPosts.includes(postId);
+
+  if (isSaved) {
+    user.savedPosts.pull(postId);
+  } else {
+    user.savedPosts.push(postId);
+  }
+
+  await user.save();
+
+  return res.json({
+    success: true,
+    message: isSaved ? "Post unsaved" : "Post saved",
+  });
+});
+
+export const getSavedPosts = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const user = await User.findById(userId).populate("savedPosts");
+  return res.json({ success: true, savedPosts: user.savedPosts });
+});

@@ -55,6 +55,24 @@ export default function PostCard({ post }) {
     }
   };
 
+  const handleSavePost = async (id) => {
+    try {
+      const { data } = await api.post(
+        "/api/user/save",
+        { postId: id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -135,7 +153,14 @@ export default function PostCard({ post }) {
             />
           </div>
 
-          <Bookmark />
+          <Bookmark
+            onClick={() => handleSavePost(post._id)}
+            className={`cursor-pointer ${
+              currUser.savedPosts.includes(post._id)
+                ? "fill-sky-600 text-sky-600"
+                : ""
+            }`}
+          />
         </div>
 
         <div className="flex flex-col gap-1 text-sm px-1">

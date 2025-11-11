@@ -34,14 +34,12 @@ export default function Profile() {
   };
 
   const fetchUser = async (profileId) => {
-    const token = await getToken();
-
     try {
       const { data } = await api.post(
         `/api/user/profiles`,
         { profileId },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${await getToken()}` },
         }
       );
 
@@ -51,6 +49,18 @@ export default function Profile() {
       } else {
         toast.error(data.message);
       }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const fetchSavedPosts = async () => {
+    try {
+      const { data } = await api.get("/api/user/saved", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      console.log(data);
     } catch (err) {
       toast.error(err.message);
     }
@@ -159,6 +169,11 @@ export default function Profile() {
                       ))
                     )}
                 </div>
+              )}
+
+              {/* Saved */}
+              {activeTab === "saved" && (
+                <div className="grid grid-cols-3 w-full"></div>
               )}
             </div>
           )}

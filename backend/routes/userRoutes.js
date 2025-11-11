@@ -4,10 +4,12 @@ import {
   acceptConnectionRequest,
   discoverUsers,
   followUser,
+  getSavedPosts,
   getUserConnections,
   getUserData,
   getUserProfiles,
   sendConnectionRequest,
+  toggleSavePost,
   unfollowUser,
   updateUserData,
 } from "../controllers/userController.js";
@@ -33,5 +35,7 @@ userRouter.post("/accept", protect, acceptConnectionRequest);
 userRouter.get("/connections", protect, getUserConnections);
 userRouter.post("/profiles", protect, getUserProfiles);
 userRouter.get("/recent-messages", protect, getUserRecentMessages);
+userRouter.post("/save", protect, toggleSavePost);
+userRouter.get("/saved", protect, getSavedPosts);
 
 export default userRouter;
