@@ -24,6 +24,7 @@ export default function Profile() {
   const { profileId } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("posts");
   const [showEdit, setShowEdit] = useState(false);
 
@@ -32,6 +33,8 @@ export default function Profile() {
     media: <Image />,
     saved: <Bookmark />,
   };
+
+  const tabs = profileId ? ["posts", "media"] : ["posts", "media", "saved"];
 
   const fetchUser = async (profileId) => {
     try {
@@ -60,7 +63,11 @@ export default function Profile() {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
 
-      console.log(data);
+      if (data.success) {
+        setSavedPosts(data.savedPosts);
+      } else {
+        toast.error(data.message);
+      }
     } catch (err) {
       toast.error(err.message);
     }
@@ -73,6 +80,12 @@ export default function Profile() {
       fetchUser(currentUser._id);
     }
   }, [profileId, currentUser]);
+
+  useEffect(() => {
+    if (activeTab === "saved" && !profileId) {
+      fetchSavedPosts();
+    }
+  }, [activeTab, profileId]);
 
   return user ? (
     <div className="relative h-full overflow-y-scroll bg-white p-6">
@@ -103,7 +116,7 @@ export default function Profile() {
         {/* Tabs */}
         <div className="my-8">
           <div className="max-w-3xl mx-auto flex justify-around border-b border-gray-300">
-            {["posts", "media", "saved"].map((tab) => (
+            {tabs.map((tab) => (
               <button
                 title={tab}
                 onClick={() => setActiveTab(tab)}
@@ -173,7 +186,11 @@ export default function Profile() {
 
               {/* Saved */}
               {activeTab === "saved" && (
-                <div className="grid grid-cols-3 w-full"></div>
+                <div>
+                  {savedPosts.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))}
+                </div>
               )}
             </div>
           )}

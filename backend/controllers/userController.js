@@ -315,6 +315,9 @@ export const toggleSavePost = wrapAsync(async (req, res) => {
 
 export const getSavedPosts = wrapAsync(async (req, res) => {
   const { userId } = req.auth();
-  const user = await User.findById(userId).populate("savedPosts");
+  const user = await User.findById(userId).populate({
+    path: "savedPosts",
+    populate: { path: "user" },
+  });
   return res.json({ success: true, savedPosts: user.savedPosts });
 });

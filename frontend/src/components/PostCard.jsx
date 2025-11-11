@@ -9,12 +9,13 @@ import {
   Smile,
 } from "lucide-react";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import PostModal from "./PostModal";
 import ShareModal from "./ShareModal";
+import { fetchUser } from "../features/user/userSlice";
 
 export default function PostCard({ post }) {
   const contentWithHashtags = post.content.replace(
@@ -29,6 +30,7 @@ export default function PostCard({ post }) {
   const { connections } = useSelector((state) => state.connections);
 
   const { getToken } = useAuth();
+  const dispatch = useDispatch();
 
   const handleLike = async () => {
     try {
@@ -65,6 +67,7 @@ export default function PostCard({ post }) {
 
       if (data.success) {
         toast.success(data.message);
+        dispatch(fetchUser(await getToken()));
       } else {
         toast.error(data.message);
       }
