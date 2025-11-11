@@ -134,6 +134,7 @@ export default function Profile() {
                       post.image_urls.map((image, idx) => (
                         <div
                           key={idx}
+                          onClick={() => window.open(image, "_blank")}
                           className="relative group block cursor-pointer"
                         >
                           <img
@@ -146,11 +147,12 @@ export default function Profile() {
                           {/* Hover overlay */}
                           <div className="absolute inset-0 flex justify-center items-center gap-4 text-white font-medium bg-black/60 opacity-0 group-hover:opacity-100 transition duration-200">
                             <div className="flex gap-1 items-center">
-                              <Heart className="w-5 h-5" />{" "}
+                              <Heart className="w-5 h-5" />
                               {post.likes_count.length}
                             </div>
                             <div className="flex gap-1 items-center">
-                              <MessageCircle className="w-5 h-5" /> 10
+                              <MessageCircle className="w-5 h-5" />
+                              {post.comments.length}
                             </div>
                           </div>
                         </div>

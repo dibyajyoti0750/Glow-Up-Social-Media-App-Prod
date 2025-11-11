@@ -107,6 +107,10 @@ export default function PostModal({ post, setPostModal }) {
     if (commentsEndRef.current) {
       commentsEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, [comments]);
 
   // I'm sorry for writing so many lines, but most of the code is just repeated & slightly changed for a separate layout

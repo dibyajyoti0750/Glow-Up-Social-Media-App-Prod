@@ -154,7 +154,7 @@ export default function PostCard({ post }) {
           <div className="flex items-center justify-between text-gray-500 pb-4 border-b border-neutral-200">
             <span
               onClick={() => setPostModal(true)}
-              className="hover:text-gray-700 cursor-pointer"
+              className="hover:text-gray-700 italic cursor-pointer"
             >
               Add a comment...
             </span>
