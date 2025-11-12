@@ -79,3 +79,23 @@ export const likePost = wrapAsync(async (req, res) => {
     return res.json({ success: true, message: "Post liked", post });
   }
 });
+
+// Delete post
+export const deletePost = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { postId } = req.body;
+
+  const post = await Post.findById(postId);
+
+  if (!post) {
+    return res.status(404).json({ success: false, message: "Post not found" });
+  }
+
+  if (post.user.toString() !== userId.toString()) {
+    return res.status(403).json({ success: false, message: "Unauthorized" });
+  }
+
+  await post.deleteOne();
+
+  return res.json({ success: true, message: "Post deleted" });
+});
