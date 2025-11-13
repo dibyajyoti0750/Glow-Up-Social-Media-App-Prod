@@ -131,34 +131,36 @@ export default function PostCard({ post, setFeeds }) {
           </div>
         </div>
 
-        <div>
-          <div
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            className="p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
-          >
-            <Ellipsis className="w-4 h-4" />
-          </div>
-
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <div className="p-1">
-              <button
-                onClick={handleDeletePost}
-                className="flex items-center gap-2 p-1 text-red-400 font-medium rounded hover:bg-red-100 cursor-pointer"
-              >
-                Delete <Trash2 className="w-4 h-4" />
-              </button>
+        {post.user._id === currUser._id && (
+          <div>
+            <div
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              className="p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
+            >
+              <Ellipsis className="w-4 h-4" />
             </div>
-          </Popover>
-        </div>
+
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={() => setAnchorEl(null)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <div className="p-1">
+                <button
+                  onClick={handleDeletePost}
+                  className="flex items-center gap-2 p-1 text-red-400 font-medium rounded hover:bg-red-100 cursor-pointer"
+                >
+                  Delete <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </Popover>
+          </div>
+        )}
       </div>
 
       {/* Content */}
