@@ -57,7 +57,7 @@ export default function Home() {
 
         <div>
           {feeds.map((post) => (
-            <PostCard key={post._id} post={post} />
+            <PostCard key={post._id} post={post} setFeeds={setFeeds} />
           ))}
         </div>
       </div>

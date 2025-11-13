@@ -7,6 +7,8 @@ import {
   MessageCircle,
   Send,
   Smile,
+  Ellipsis,
+  Trash2,
 } from "lucide-react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +18,9 @@ import toast from "react-hot-toast";
 import PostModal from "./PostModal";
 import ShareModal from "./ShareModal";
 import { fetchUser } from "../features/user/userSlice";
+import Popover from "@mui/material/Popover";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, setFeeds }) {
   const contentWithHashtags = post.content.replace(
     /(#\w+)/g,
     '<span class="text-indigo-500">$1</span>'
@@ -26,6 +29,7 @@ export default function PostCard({ post }) {
   const [likes, setLikes] = useState(post.likes_count);
   const [postModal, setPostModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const currUser = useSelector((state) => state.user.value);
   const { connections } = useSelector((state) => state.connections);
 
@@ -76,32 +80,84 @@ export default function PostCard({ post }) {
     }
   };
 
+  const handleDeletePost = async () => {
+    try {
+      const { data } = await api.delete(`/api/post/delete/${post._id}`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setFeeds((prev) => prev.filter((p) => p._id !== post._id));
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const navigate = useNavigate();
+
+  // popover variables
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <div className="bg-white p-4 my-6 space-y-4 w-full max-w-3xl">
       {/* User info */}
-      <div
-        onClick={() => navigate(`/profile/${post.user._id}`)}
-        className="inline-flex items-center gap-2 cursor-pointer"
-      >
-        <img
-          src={post.user.profile_picture}
-          alt="profile picture"
-          className="w-10 h-10 rounded-full object-cover shadow hover:opacity-90"
-        />
+      <div className="flex items-center justify-between">
+        <div
+          onClick={() => navigate(`/profile/${post.user._id}`)}
+          className="inline-flex items-center gap-2 cursor-pointer"
+        >
+          <img
+            src={post.user.profile_picture}
+            alt="profile picture"
+            className="w-10 h-10 rounded-full object-cover shadow hover:opacity-90"
+          />
+
+          <div>
+            <div className="flex items-center gap-1 text-sm">
+              <span>{post.user.full_name}</span>
+              {post.user.is_verified && (
+                <Verified className="w-4 h-4 text-sky-600" />
+              )}
+            </div>
+
+            <div className="text-gray-500 text-xs">
+              @{post.user.username} • {moment(post.createdAt).fromNow()}
+            </div>
+          </div>
+        </div>
 
         <div>
-          <div className="flex items-center gap-1 text-sm">
-            <span>{post.user.full_name}</span>
-            {post.user.is_verified && (
-              <Verified className="w-4 h-4 text-sky-600" />
-            )}
+          <div
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            className="p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
+          >
+            <Ellipsis className="w-4 h-4" />
           </div>
 
-          <div className="text-gray-500 text-xs">
-            @{post.user.username} • {moment(post.createdAt).fromNow()}
-          </div>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <div className="p-1">
+              <button
+                onClick={handleDeletePost}
+                className="flex items-center gap-2 p-1 text-red-400 font-medium rounded hover:bg-red-100 cursor-pointer"
+              >
+                Delete <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          </Popover>
         </div>
       </div>
 

@@ -12,6 +12,6 @@ const postRouter = express.Router();
 postRouter.get("/feed", protect, getFeedPosts);
 postRouter.post("/add", protect, upload.array("images", 4), addPost);
 postRouter.post("/like", protect, likePost);
-postRouter.delete("/delete", protect, deletePost);
+postRouter.delete("/delete/:postId", protect, deletePost);
 
 export default postRouter;

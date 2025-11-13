@@ -83,7 +83,7 @@ export const likePost = wrapAsync(async (req, res) => {
 // Delete post
 export const deletePost = wrapAsync(async (req, res) => {
   const { userId } = req.auth();
-  const { postId } = req.body;
+  const { postId } = req.params;
 
   const post = await Post.findById(postId);
 
