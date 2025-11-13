@@ -1,4 +1,12 @@
-import { Bookmark, Dot, Heart, MessageCircle, Send, X } from "lucide-react";
+import {
+  Bookmark,
+  Dot,
+  Heart,
+  MessageCircle,
+  Send,
+  Trash2,
+  X,
+} from "lucide-react";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import api from "../api/axios";
@@ -95,6 +103,23 @@ export default function PostModal({ post, setPostModal }) {
         toast.success(data.message);
         setText("");
         setComments((prev) => [...prev, data.comment]);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const deleteComment = async (id) => {
+    try {
+      const { data } = await api.delete(`/api/comment/delete/${id}`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setComments((prev) => prev.filter((c) => c._id !== id));
       } else {
         toast.error(data.message);
       }
@@ -206,22 +231,28 @@ export default function PostModal({ post, setPostModal }) {
 
                 {/* Comments */}
                 {comments.map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
+                  <div key={i} className="flex items-center gap-3 group">
                     <img
                       src={item.user.profile_picture}
                       alt="User"
                       className="w-8 h-8 rounded-full"
                     />
                     <div className="flex flex-col">
-                      <p className="text-sm">
+                      <div className="text-sm">
                         <span className="font-semibold mr-2">
                           {item.user.username}
                         </span>
                         <span className="break-words">{item.comment}</span>
-                      </p>
-                      <span className="text-xs text-gray-500 mt-1">
-                        {moment(item.createdAt).fromNow()}
-                      </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                        <span>{moment(item.createdAt).fromNow()}</span>
+                        {item.user._id === currentUser._id && (
+                          <Trash2
+                            onClick={() => deleteComment(item._id)}
+                            className="h-3.5 w-3.5 hidden group-hover:block text-red-400 cursor-pointer"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -367,7 +398,7 @@ export default function PostModal({ post, setPostModal }) {
               {/* Comments */}
               <div className="p-4 max-h-60 overflow-y-auto border-t border-gray-200">
                 {comments.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 mb-2">
+                  <div key={i} className="flex items-start gap-3 mb-2 group">
                     <img
                       src={item.user.profile_picture}
                       alt="User"
@@ -380,9 +411,15 @@ export default function PostModal({ post, setPostModal }) {
                         </span>
                         <span className="break-words">{item.comment}</span>
                       </p>
-                      <span className="text-xs text-gray-500 mt-1">
-                        {moment(item.createdAt).fromNow()}
-                      </span>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                        <span>{moment(item.createdAt).fromNow()}</span>
+                        {item.user._id === currentUser._id && (
+                          <Trash2
+                            onClick={() => deleteComment(item._id)}
+                            className="h-3.5 w-3.5 hidden group-hover:block text-red-400 cursor-pointer"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}

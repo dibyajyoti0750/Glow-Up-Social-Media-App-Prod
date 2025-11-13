@@ -137,7 +137,7 @@ export default function PostCard({ post, setFeeds }) {
               onClick={(e) => setAnchorEl(e.currentTarget)}
               className="p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
             >
-              <Ellipsis className="w-4 h-4" />
+              <Ellipsis className="w-5 h-5" />
             </div>
 
             <Popover
@@ -150,14 +150,14 @@ export default function PostCard({ post, setFeeds }) {
                 horizontal: "left",
               }}
             >
-              <div className="p-1">
-                <button
+              <ul className="p-1.5">
+                <li
                   onClick={handleDeletePost}
-                  className="flex items-center gap-2 p-1 text-red-400 font-medium rounded hover:bg-red-100 cursor-pointer"
+                  className="flex items-center gap-2 p-2 text-red-400 font-medium rounded hover:bg-red-100 cursor-pointer"
                 >
                   Delete <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+                </li>
+              </ul>
             </Popover>
           </div>
         )}

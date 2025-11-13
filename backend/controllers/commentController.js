@@ -26,3 +26,24 @@ export const addComment = wrapAsync(async (req, res) => {
     comment: populatedComment,
   });
 });
+
+export const deleteComment = wrapAsync(async (req, res) => {
+  const { userId } = req.auth();
+  const { commentId } = req.params;
+
+  const comment = await Comment.findById(commentId);
+
+  if (!comment) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Comment not found" });
+  }
+
+  if (comment.user.toString() !== userId.toString()) {
+    return res.status(403).json({ success: false, message: "Unauthorized" });
+  }
+
+  await comment.deleteOne();
+
+  return res.json({ success: true, message: "Comment deleted" });
+});
