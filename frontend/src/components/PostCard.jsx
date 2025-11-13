@@ -53,6 +53,22 @@ export default function PostCard({ post, setFeeds }) {
             return [...prev, currUser._id];
           }
         });
+
+        setFeeds((prevFeeds) =>
+          prevFeeds.map((p) => {
+            if (p._id === post._id) {
+              const alreadyLiked = p.likes_count.includes(currUser._id);
+
+              return {
+                ...p,
+                likes_count: alreadyLiked
+                  ? p.likes_count.filter((id) => id !== currUser._id)
+                  : [...p.likes_count, currUser._id],
+              };
+            }
+            return p;
+          })
+        );
       } else {
         toast.error(data.message);
       }
@@ -253,7 +269,13 @@ export default function PostCard({ post, setFeeds }) {
         </div>
       </div>
 
-      {postModal && <PostModal post={post} setPostModal={setPostModal} />}
+      {postModal && (
+        <PostModal
+          post={post}
+          setPostModal={setPostModal}
+          setFeeds={setFeeds}
+        />
+      )}
 
       {shareModal && (
         <ShareModal

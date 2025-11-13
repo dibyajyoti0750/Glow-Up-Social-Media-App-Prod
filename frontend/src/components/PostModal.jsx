@@ -10,12 +10,12 @@ import {
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import api from "../api/axios";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../features/user/userSlice";
 
-export default function PostModal({ post, setPostModal }) {
+export default function PostModal({ post, setPostModal, setFeeds }) {
   const currentUser = useSelector((state) => state.user.value);
   const [text, setText] = useState("");
   const [likes, setLikes] = useState(post.likes_count);
@@ -37,6 +37,7 @@ export default function PostModal({ post, setPostModal }) {
 
       if (data.success) {
         toast.success(data.message);
+
         setLikes((prev) => {
           if (prev.includes(currentUser._id)) {
             return prev.filter((id) => id !== currentUser._id);
@@ -103,6 +104,14 @@ export default function PostModal({ post, setPostModal }) {
         toast.success(data.message);
         setText("");
         setComments((prev) => [...prev, data.comment]);
+
+        setFeeds((prevFeeds) =>
+          prevFeeds.map((p) =>
+            p._id === post._id
+              ? { ...p, comments: [...p.comments, data.comment] }
+              : p
+          )
+        );
       } else {
         toast.error(data.message);
       }
@@ -282,11 +291,16 @@ export default function PostModal({ post, setPostModal }) {
                 </div>
 
                 <div className="px-1.5 text-sm">
-                  {likes.length < 1
-                    ? "Be the first to like this"
-                    : likes.length === 1
-                    ? "1 like"
-                    : `${likes.length} likes`}
+                  {likes.length < 1 ? (
+                    <>
+                      Be the first to{" "}
+                      <span className="font-semibold">like this</span>
+                    </>
+                  ) : likes.length === 1 ? (
+                    "1 like"
+                  ) : (
+                    `${likes.length} likes`
+                  )}
                 </div>
               </div>
 
@@ -387,12 +401,17 @@ export default function PostModal({ post, setPostModal }) {
                 <Bookmark />
               </div>
 
-              <div className="px-4 text-sm text-gray-600 pb-2">
-                {likes.length < 1
-                  ? "Be the first to like this"
-                  : likes.length === 1
-                  ? "1 like"
-                  : `${likes.length} likes`}
+              <div className="px-4 text-sm pb-2">
+                {likes.length < 1 ? (
+                  <>
+                    Be the first to{" "}
+                    <span className="font-semibold">like this</span>
+                  </>
+                ) : likes.length === 1 ? (
+                  "1 like"
+                ) : (
+                  `${likes.length} likes`
+                )}
               </div>
 
               {/* Comments */}
