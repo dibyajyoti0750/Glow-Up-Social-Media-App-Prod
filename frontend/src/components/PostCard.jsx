@@ -214,16 +214,30 @@ export default function PostCard({ post, setFeeds }) {
       <div className="flex flex-col text-gray-800 gap-2">
         <div className="flex justify-between items-center">
           <div className="flex gap-4">
-            <Heart
-              onClick={handleLike}
-              className={`cursor-pointer ${
-                likes.includes(currUser._id) ? "text-red-500 fill-red-500" : ""
-              }`}
-            />
-            <MessageCircle
-              onClick={() => setPostModal(true)}
-              className="scale-x-[-1] cursor-pointer"
-            />
+            <div className="flex items-center gap-1.5">
+              <Heart
+                onClick={handleLike}
+                className={`cursor-pointer ${
+                  likes.includes(currUser._id)
+                    ? "text-red-500 fill-red-500"
+                    : ""
+                }`}
+              />
+              {likes.length > 0 && (
+                <span className="font-medium">{likes.length}</span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <MessageCircle
+                onClick={() => setPostModal(true)}
+                className="scale-x-[-1] cursor-pointer"
+              />
+              {post.comments.length > 0 && (
+                <span className="font-medium">{post.comments.length}</span>
+              )}
+            </div>
+
             <Send
               onClick={() => setShareModal(true)}
               className="cursor-pointer"
@@ -242,14 +256,10 @@ export default function PostCard({ post, setFeeds }) {
 
         <div className="flex flex-col gap-1 text-sm px-1">
           <div>
-            {!likes.length ? (
+            {!likes.length && (
               <>
                 Be the first to <span className="font-semibold">like this</span>
               </>
-            ) : likes.length === 1 ? (
-              "1 like"
-            ) : (
-              `${likes.length} likes`
             )}
           </div>
 

@@ -4,6 +4,7 @@ import moment from "moment";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecentMessages } from "../features/messages/messagesSlice";
+import { Image } from "lucide-react";
 
 export default function RecentMessages() {
   const dispatch = useDispatch();
@@ -45,9 +46,15 @@ export default function RecentMessages() {
               </div>
 
               <div className="flex items-center justify-between">
-                <p className="text-gray-500">
-                  {message.text ? message.text : "Media"}
-                </p>
+                <div className="text-gray-500">
+                  {message.text ? (
+                    message.text
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <Image className="h-3 w-3" /> Media
+                    </div>
+                  )}
+                </div>
                 {!message.seen && (
                   <p className="bg-blue-500 text-white w-4 h-4 flex items-center justify-center rounded-full text-[10px]">
                     1

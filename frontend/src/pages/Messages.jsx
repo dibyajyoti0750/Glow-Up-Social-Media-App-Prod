@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Verified, ChevronLeft } from "lucide-react";
+import { Verified, ChevronLeft, Image } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
@@ -91,7 +91,7 @@ export default function Messages() {
                     </div>
                     <div className="flex items-center justify-between">
                       {/* Display the last message */}
-                      <p className="text-sm text-gray-600 line-clamp-1">
+                      <div className="text-sm text-gray-600 line-clamp-1">
                         {(() => {
                           const latest = latestMessages.find(
                             (msg) =>
@@ -104,11 +104,21 @@ export default function Messages() {
                           const isCurrentUserSender =
                             latest.from_user_id === currUser.id;
 
-                          return isCurrentUserSender
-                            ? `You: ${latest.text ? latest.text : "Media"}`
-                            : `${latest.text ? latest.text : "Media"}`;
+                          const text = latest.text ? (
+                            latest.text
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <Image className="w-4 h-4" /> Media
+                            </span>
+                          );
+
+                          return (
+                            <div>
+                              {isCurrentUserSender ? "You: " : ""} {text}
+                            </div>
+                          );
                         })()}
-                      </p>
+                      </div>
 
                       {/* Display unseen badge */}
                       {(() => {
