@@ -36,7 +36,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="w-full px-4">
           <div
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 my-4 cursor-pointer"
+            className="flex items-center gap-2 mb-5 mt-8 sm:mt-0 cursor-pointer"
           >
             <img src={assets.logo} alt="Logo" className="w-10" />
             <h3 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-red-400 to-red-700 bg-clip-text text-transparent">

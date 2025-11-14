@@ -198,7 +198,7 @@ export default function ChatBox() {
         </div>
 
         {/* Input area */}
-        <div className="flex flex-col gap-3 w-full max-w-md md:max-w-3xl mx-auto bg-gray-100/80 rounded-3xl mb-5">
+        <div className="flex flex-col gap-3 w-full max-w-md md:max-w-3xl mx-auto bg-gray-100/80 rounded-3xl mb-2">
           {image && (
             <div className="relative group w-24 h-24 mx-3 mt-4">
               <img
