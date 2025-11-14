@@ -273,33 +273,41 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
               <div className="flex flex-col gap-2 px-2 py-5 border-t border-gray-200 shrink-0">
                 <div className="flex justify-between items-center">
                   <div className="flex gap-4">
-                    <Heart
-                      onClick={handleLike}
-                      className={`cursor-pointer ${
-                        likes.includes(currentUser._id)
-                          ? "text-red-500 fill-red-500"
-                          : ""
-                      }`}
-                    />
-                    <MessageCircle
-                      onClick={() => inputRef.current.focus()}
-                      className="cursor-pointer"
-                    />
+                    <div className="flex items-center gap-1.5">
+                      <Heart
+                        onClick={handleLike}
+                        className={`cursor-pointer ${
+                          likes.includes(currentUser._id)
+                            ? "text-red-500 fill-red-500"
+                            : ""
+                        }`}
+                      />
+                      {likes.length > 0 && (
+                        <span className="font-medium">{likes.length}</span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      <MessageCircle
+                        onClick={() => inputRef.current.focus()}
+                        className="cursor-pointer"
+                      />
+                      {comments.length > 0 && (
+                        <span className="font-medium">{comments.length}</span>
+                      )}
+                    </div>
+
                     <Send />
                   </div>
                   <Bookmark />
                 </div>
 
                 <div className="px-1.5 text-sm">
-                  {likes.length < 1 ? (
+                  {!likes.length && (
                     <>
-                      Be the first to{" "}
+                      Be the first to
                       <span className="font-semibold">like this</span>
                     </>
-                  ) : likes.length === 1 ? (
-                    "1 like"
-                  ) : (
-                    `${likes.length} likes`
                   )}
                 </div>
               </div>
@@ -384,33 +392,40 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
               {/* Likes */}
               <div className="px-4 py-2 flex items-center justify-between">
                 <div className="flex gap-4">
-                  <Heart
-                    onClick={handleLike}
-                    className={`cursor-pointer ${
-                      likes.includes(currentUser._id)
-                        ? "text-red-500 fill-red-500"
-                        : ""
-                    }`}
-                  />
-                  <MessageCircle
-                    onClick={() => inputRef.current.focus()}
-                    className="cursor-pointer"
-                  />
+                  <div className="flex items-center gap-1.5">
+                    <Heart
+                      onClick={handleLike}
+                      className={`cursor-pointer ${
+                        likes.includes(currentUser._id)
+                          ? "text-red-500 fill-red-500"
+                          : ""
+                      }`}
+                    />
+                    {likes.length > 0 && (
+                      <span className="font-medium">{likes.length}</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <MessageCircle
+                      onClick={() => inputRef.current.focus()}
+                      className="cursor-pointer"
+                    />
+                    {comments.length > 0 && (
+                      <span className="font-medium">{comments.length}</span>
+                    )}
+                  </div>
                   <Send />
                 </div>
                 <Bookmark />
               </div>
 
               <div className="px-4 text-sm pb-2">
-                {likes.length < 1 ? (
+                {!likes.length && (
                   <>
-                    Be the first to{" "}
+                    Be the first to
                     <span className="font-semibold">like this</span>
                   </>
-                ) : likes.length === 1 ? (
-                  "1 like"
-                ) : (
-                  `${likes.length} likes`
                 )}
               </div>
 
