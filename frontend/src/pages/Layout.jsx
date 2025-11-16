@@ -13,12 +13,12 @@ export default function Layout() {
   const hideSidebar = location.pathname.startsWith("/inbox");
 
   return userData ? (
-    <div className="w-full flex min-h-screen">
+    <div className="w-full flex h-screen">
       {!hideSidebar && (
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       )}
 
-      <div className="flex-1 py-5">
+      <div className="flex-1 pt-5 overflow-y-auto">
         <Outlet />
       </div>
 

@@ -54,7 +54,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
 
-        <div className="w-full p-4 px-7 flex items-center justify-between">
+        <div className="w-full p-4 px-7 flex items-center justify-between border-t border-gray-200">
           <div className="flex gap-2 items-center cursor-pointer">
             <UserButton />
             <div>
