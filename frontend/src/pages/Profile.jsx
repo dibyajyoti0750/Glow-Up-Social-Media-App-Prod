@@ -88,7 +88,7 @@ export default function Profile() {
   }, [activeTab, profileId]);
 
   return user ? (
-    <div className="relative h-full overflow-y-scroll bg-white p-6">
+    <div className="relative h-full overflow-y-scroll bg-white p-3">
       <div className="max-w-4xl mx-auto">
         {/* Profile card */}
         <div className="rounded-xl overflow-hidden">

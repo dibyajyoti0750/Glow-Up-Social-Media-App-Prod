@@ -114,7 +114,7 @@ export default function StoriesBar() {
         </button>
       )}
 
-      <div className="flex items-center gap-4 py-2">
+      <div className="flex items-center gap-4 py-5">
         {/* Add Story */}
         <div
           onClick={() => setShowModal(true)}

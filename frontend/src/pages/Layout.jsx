@@ -18,19 +18,19 @@ export default function Layout() {
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       )}
 
-      <div className="flex-1 pt-5 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         <Outlet />
       </div>
 
       {sidebarOpen ? (
         <X
           onClick={() => setSidebarOpen(false)}
-          className="absolute top-2 left-2 z-10 p-1 h-8 w-8 text-gray-700 sm:hidden cursor-pointer"
+          className="absolute top-2 left-2 z-10 p-1 h-8 w-8 text-gray-900 sm:hidden cursor-pointer"
         />
       ) : (
         <Menu
           onClick={() => setSidebarOpen(true)}
-          className="absolute top-2 left-2 z-10 p-1 h-8 w-8 text-gray-700 sm:hidden cursor-pointer"
+          className="absolute top-2 left-2 z-10 p-1 h-8 w-8 text-gray-900 sm:hidden cursor-pointer"
         />
       )}
     </div>

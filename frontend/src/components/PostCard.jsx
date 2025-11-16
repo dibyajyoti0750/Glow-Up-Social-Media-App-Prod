@@ -120,7 +120,7 @@ export default function PostCard({ post, setFeeds }) {
   const id = open ? "simple-popover" : undefined;
 
   return (
-    <div className="bg-white p-4 my-6 space-y-4 w-full max-w-3xl">
+    <div className="bg-white p-4 my-3.5 space-y-4 w-full max-w-3xl">
       {/* User info */}
       <div className="flex items-center justify-between">
         <div

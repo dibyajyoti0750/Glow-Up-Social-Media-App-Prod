@@ -137,24 +137,14 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
     }
   };
 
-  useEffect(() => {
-    if (commentsEndRef.current) {
-      commentsEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [comments]);
-
   // I'm sorry for writing so many lines, but most of the code is just repeated & slightly changed for a separate layout
   return (
     <>
       {post.image_urls.length > 0 ? (
         // 🖼️ Image post layout
-        <div className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black/70 text-white backdrop-blur-sm">
+        <div className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black/70 text-white backdrop-blur-sm px-4 md:px-0">
           {/* Close button */}
-          <div className="w-full max-w-4xl flex justify-between items-center py-2">
+          <div className="w-full max-w-4xl flex justify-between items-center mb-2">
             <span></span>
             <button
               onClick={() => setPostModal(false)}
@@ -336,9 +326,9 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
         </div>
       ) : (
         // ✍️ Text-only Post Layout
-        <div className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm px-4 md:px-0">
           {/* Close button */}
-          <div className="w-full max-w-xl flex justify-between items-center py-2">
+          <div className="w-full max-w-xl flex justify-between items-center mb-2">
             <span></span>
             <button
               onClick={() => setPostModal(false)}
@@ -384,7 +374,7 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-hidden flex flex-col">
               <div className="p-4 text-gray-900 text-base leading-relaxed break-words">
                 {post.content}
               </div>

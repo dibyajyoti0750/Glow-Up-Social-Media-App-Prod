@@ -81,7 +81,7 @@ export default function UserProfileInfo({
   };
 
   return (
-    <div className="relative py-2 px-6 md:px-8 bg-white">
+    <div className="relative py-2 px-4 md:px-6 bg-white">
       <div className="flex flex-col md:flex-row items-start gap-6">
         <div className="h-32 w-32 border-4 border-white shadow-xl absolute -top-16 rounded-full overflow-hidden cursor-pointer group">
           <img
@@ -116,9 +116,9 @@ export default function UserProfileInfo({
             {!profileId && (
               <button
                 onClick={() => setShowEdit(true)}
-                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3.5 py-1.5 rounded-lg font-medium text-sm transition-colors cursor-pointer"
               >
-                Edit profile
+                Edit
               </button>
             )}
           </div>
