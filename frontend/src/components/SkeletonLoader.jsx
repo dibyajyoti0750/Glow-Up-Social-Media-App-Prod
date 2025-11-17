@@ -1,12 +1,12 @@
 export default function SkeletonLoader() {
   return (
     <div className="flex flex-col mx-auto space-y-10 my-14 h-full w-full max-w-2xl">
-      <div className="w-full flex items-center justify-around">
-        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full"></div>
-        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full"></div>
-        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full"></div>
-        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full"></div>
-        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full"></div>
+      <div className="w-full flex items-center justify-center gap-2.5">
+        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full shrink-0"></div>
+        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full shrink-0"></div>
+        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full shrink-0"></div>
+        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full shrink-0"></div>
+        <div className="animate-pulse bg-gray-200 w-28 h-28 rounded-full shrink-0"></div>
       </div>
 
       <div className="flex flex-col bg-gray-100 w-full h-full animate-pulse rounded-xl p-4 gap-4">
