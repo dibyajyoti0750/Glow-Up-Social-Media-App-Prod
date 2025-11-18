@@ -23,7 +23,7 @@ export default function Profile() {
 
   const { profileId } = useParams();
   const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
+  const [profileFeeds, setProfileFeeds] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("posts");
   const [showEdit, setShowEdit] = useState(false);
@@ -48,7 +48,7 @@ export default function Profile() {
 
       if (data.success) {
         setUser(data.profile);
-        setPosts(data.posts);
+        setProfileFeeds(data.posts);
       } else {
         toast.error(data.message);
       }
@@ -107,7 +107,7 @@ export default function Profile() {
           {/* User info */}
           <UserProfileInfo
             user={user}
-            posts={posts}
+            posts={profileFeeds}
             profileId={profileId}
             setShowEdit={setShowEdit}
           />
@@ -131,7 +131,7 @@ export default function Profile() {
           </div>
 
           {/* Posts */}
-          {!posts.length ? (
+          {!profileFeeds.length ? (
             <div className="flex flex-col gap-5 justify-center items-center p-8 sm:p-12 md:p-16 text-gray-300">
               <div className="h-32 w-32 flex justify-center items-center rounded-full border-2">
                 <Camera className="h-16 w-16" />
@@ -142,8 +142,12 @@ export default function Profile() {
             <div>
               {activeTab === "posts" && (
                 <div className="flex flex-col items-center">
-                  {posts.map((post) => (
-                    <PostCard key={post._id} post={post} />
+                  {profileFeeds.map((post) => (
+                    <PostCard
+                      key={post._id}
+                      post={post}
+                      setFeeds={setProfileFeeds}
+                    />
                   ))}
                 </div>
               )}
@@ -188,7 +192,7 @@ export default function Profile() {
               {activeTab === "saved" && (
                 <div>
                   {savedPosts.map((post) => (
-                    <PostCard key={post._id} post={post} />
+                    <PostCard key={post._id} post={post} setFeeds={setFeeds} />
                   ))}
                 </div>
               )}

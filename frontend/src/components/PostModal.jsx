@@ -295,7 +295,7 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
                 <div className="px-1.5 text-sm">
                   {!likes.length && (
                     <>
-                      Be the first to
+                      Be the first to{" "}
                       <span className="font-semibold">like this</span>
                     </>
                   )}
@@ -413,7 +413,7 @@ export default function PostModal({ post, setPostModal, setFeeds }) {
               <div className="px-4 text-sm pb-2">
                 {!likes.length && (
                   <>
-                    Be the first to
+                    Be the first to{" "}
                     <span className="font-semibold">like this</span>
                   </>
                 )}

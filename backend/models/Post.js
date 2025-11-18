@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Comment from "./Comment.js";
 
 const postSchema = new mongoose.Schema(
   {
@@ -14,6 +15,21 @@ const postSchema = new mongoose.Schema(
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true, minimize: false }
+);
+
+postSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    const postId = this._id;
+
+    try {
+      await Comment.deleteMany({ post: postId });
+      next();
+    } catch (err) {
+      next(err);
+    }
+  }
 );
 
 export default mongoose.model("Post", postSchema);
