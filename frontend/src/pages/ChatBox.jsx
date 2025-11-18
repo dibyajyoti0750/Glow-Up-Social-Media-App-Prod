@@ -148,7 +148,7 @@ export default function ChatBox() {
                       </div>
                     )}
 
-                    {message.message_type === "post_share" && (
+                    {message.message_type === "post_share" && message.post ? (
                       <>
                         <div
                           onClick={() => setPostModal(message.post)}
@@ -188,6 +188,18 @@ export default function ChatBox() {
                           />
                         )}
                       </>
+                    ) : (
+                      message.message_type === "post_share" &&
+                      !message.post && (
+                        <div className="rounded-2xl p-3 bg-sky-800 text-white text-sm max-w-sm opacity-60">
+                          <p className="italic">
+                            This post is no longer available
+                          </p>
+                          <div className="text-xs text-gray-300 mt-1">
+                            {moment(message.createdAt).calendar()}
+                          </div>
+                        </div>
+                      )
                     )}
                   </div>
                 </div>
