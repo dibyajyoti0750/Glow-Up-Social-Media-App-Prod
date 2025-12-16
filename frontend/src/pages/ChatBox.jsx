@@ -28,15 +28,6 @@ export default function ChatBox() {
 
   const { connections } = useSelector((state) => state.connections);
 
-  const fetchUserMessages = async () => {
-    try {
-      const token = await getToken();
-      dispatch(fetchMessages({ token, userId }));
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
   const sendMessage = async () => {
     try {
       if (!text && !image) return;
@@ -65,9 +56,19 @@ export default function ChatBox() {
   };
 
   useEffect(() => {
+    const fetchUserMessages = async () => {
+      try {
+        const token = await getToken();
+        dispatch(fetchMessages({ token, userId }));
+      } catch (err) {
+        toast.error(err.message);
+      }
+    };
+
     fetchUserMessages();
+
     return () => dispatch(resetMessages());
-  }, [userId]);
+  }, [dispatch, getToken, userId]);
 
   useEffect(() => {
     if (connections.length > 0) {
